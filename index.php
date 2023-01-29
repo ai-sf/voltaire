@@ -1,9 +1,9 @@
 <!doctype html>
 <html>
   <head>
-    <title>AISF Voting System</title>
+    <title>VOLTAIRE - AISF Voting System</title>
   </head>
   <body>
-    Ciao!
+  Voting On Line Technology And Interactive Results Engine
   </body>
   <html>
