@@ -12,5 +12,6 @@ jobs:
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
         server: ftp.ai-sf.it
+        server-dir: www.ai-sf.it/voltaire
         username: 6704760@aruba.it
         password: ${{ secrets.ftp_password }}
