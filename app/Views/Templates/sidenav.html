@@ -13,7 +13,7 @@
           <a
             href="{{el.link | url }}"
             class="nav-link text-white mb-1
-              {% if sublink %} active {% endif %}
+              {% if sublink %} active mb-2 {% endif %}
             "
             aria-current="page"
           >
@@ -26,7 +26,7 @@
           {% assign on_page = subel.link | url%}
           <li class="nav-item small subnav">
             <a href="{{on_page}}"
-                  class=" nav-link text-white mb-1
+                  class=" nav-link py-0 text-white mb-1
                     {% if page == on_page %} fw-bold {% endif %}
                   ">{{subel.title}}</a>
           </li>

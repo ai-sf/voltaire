@@ -28,6 +28,10 @@ class AdminController extends BaseController
                 "icon" => "bar-chart-fill",
                 "subnav" => [
                     [
+                        "title" => "Tutte le votazioni",
+                        "link" => "admin/polls"
+                    ],
+                    [
                         "title" => "Nuova votazione",
                         "link" => "admin/polls/new"
                     ]
@@ -38,6 +42,10 @@ class AdminController extends BaseController
                 "link" => "admin/users",
                 "icon" => "people-fill",
                 "subnav" => [
+                    [
+                        "title" => "Tutti gli utenti",
+                        "link" => "admin/users"
+                    ],
                     [
                         "title" => "Nuovo utente",
                         "link" => "admin/users/new"
