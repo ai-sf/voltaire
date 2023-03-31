@@ -1,0 +1,13 @@
+{% assign title = "Lista sondaggi (Admin)" %}
+{% assign cardtitle = "Lista utenti"%}
+{% assign cardwidth = "100" %}
+
+{% extends "Templates/adminCentralCard" %}
+
+{% block content %}
+
+
+<div class="container">
+  {% include "Admin/Users/usersTable" %}
+</div>
+{% endblock %}

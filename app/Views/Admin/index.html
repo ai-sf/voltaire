@@ -1,0 +1,14 @@
+{% assign title = "Lista sondaggi (Admin)" %}
+
+{% extends "Templates/admin" %}
+
+{% block content %}
+
+<h1>Voltaire - Lista votazioni (admin)</h1>
+
+{% for poll in polls %}
+{% assign poll_url = "polls/"  | append: poll.id | url  %}
+<p> <a href="{{poll_url }}">{{poll.title}}</a> </p>
+{% endfor %}
+
+{% endblock %}

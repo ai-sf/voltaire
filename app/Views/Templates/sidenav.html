@@ -1,0 +1,51 @@
+<div class="sidenav-container fixedr">
+  <div class="d-flex flex-column flex-shrink-0 p-3 h-100 shadow-lg bg-dark ">
+    <a href="{{ "admin" | url }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+      <span class="fs-4 text-primary me-3 ms-2 fw-bold"><i class="bi bi-check-circle"></i></span>
+      <div class="fs-4 fw-bold text-primary">Voltaire</div>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+      {% for el in nav %}
+      {% assign on_page = el.link | url%}
+        <li class="nav-item">
+          {% assign sublink = el.link | sublink: page %}
+          <a
+            href="{{el.link | url }}"
+            class="nav-link text-white mb-1
+              {% if sublink %} active {% endif %}
+            "
+            aria-current="page"
+          >
+            <span class="nav-icon"><i class="bi bi-{{el.icon}}"></i></span>
+            <span   {% if page == on_page %} class="fw-bold" {% endif %}>{{el.title}}</span>
+          </a>
+        </li>
+        {% if sublink %}
+          {% for subel in el.subnav %}
+          {% assign on_page = subel.link | url%}
+          <li class="nav-item small subnav">
+            <a href="{{on_page}}"
+                  class=" nav-link text-white mb-1
+                    {% if page == on_page %} fw-bold {% endif %}
+                  ">{{subel.title}}</a>
+          </li>
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+
+      <hr>
+
+    </ul>
+
+    <li class="nav-item xt-auto">
+      <a href="{{"logout" | url }}" class="nav-link text-white mb-1" aria-current="page">
+        <span class="nav-icon"><i class="bi bi-box-arrow-right"></i></span>
+        <span class="fw-bold">Logout</span>
+      </a>
+    </li>
+
+
+  </div>
+  </div>
+</div>

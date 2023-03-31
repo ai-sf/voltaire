@@ -1,0 +1,14 @@
+body{
+  overflow-x: hidden;
+  background-color: #e2e3e5;
+}
+
+.htmx-indicator{
+  display:none;
+}
+.htmx-request .my-indicator{
+  display:inline;
+}
+.htmx-request.my-indicator{
+  display:inline;
+}

@@ -1,0 +1,20 @@
+{% assign title = "Login" %}
+{% extends "Templates/base" %}
+
+{% block content %}
+<div class="container-fluid" >
+  <div class="row">
+    <div class="col col-12 col-md-6 col-lg-4 mx-auto mt-5" >
+      <div class="card shadow-lg w-100">
+        <div class="card-header bg-primary text-light">
+          <h3 class="text-center">Login</h3>
+        </div>
+        <div class="card-body">
+          {% include "Site/loginForm" %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

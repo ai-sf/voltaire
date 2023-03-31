@@ -1,0 +1,59 @@
+
+<form hx-post="{{"admin/users/save" | url}}" hx-swap="outerHTML" >
+  {% if user %}
+    <input type="hidden" name="user-id" value="{{user.id}}">
+  {% endif %}
+  <div class="row mb-3">
+    <label for="name" class="col-sm-2 col-form-label">Nome</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="name" id="name" value="{{user.name}}">
+    </div>
+  </div>
+  <div class="row mb-3">
+    <label for="surname" class="col-sm-2 col-form-label">Cognome</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="surname" id="surname" value="{{user.surname}}">
+    </div>
+  </div>
+  <div class="row mb-3">
+    <label for="email" class="col-sm-2 col-form-label">Email</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="email" id="email" value="{{user.email}}">
+    </div>
+  </div>
+  <div class="row mb-3 align-items-center">
+    <label for="password" class="col-sm-2 col-form-label">Password</label>
+    <div class="col-sm-10">
+      <span class="fst-italic">La password verrà generata automaticamente</span>
+    </div>
+  </div>
+  <div class="row mb-3 align-items-center">
+    <label for="level" class="col-sm-2 col-form-label">Ruolo</label>
+    <div class="col">
+      <select class="form-select" aria-label="Default select example" name="level" id="level">
+        <option value="1" {% if user.level == 2 %} selected {% endif %}>User</option>
+        <option value="2" {% if user.level == 1 %} selected {% endif %}>Admin</option>
+      </select>
+      </div>
+    <div class="col"></div>
+    <label for="role" class="col-sm-2 ms-auto">Abilitato</label>
+    <div class="col-auto form-check form-switch">
+      <input
+      class="form-check-input"
+      type="checkbox"
+      name="active"
+      role="switch"
+      value="1"
+      {% if user.active == 1 %} checked {% endif %}
+    >
+  </div>
+
+  <div class="row">
+    <div class="col-auto mx-auto">
+      <button type="submit" class="mt-3 mb-2 btn btn-primary">Salva</button>
+
+    </div>
+  </div>
+</form>
+
+{% if is_update %} <div id="toast-body" hx-swap-oob="true" class="toast-body">{{message}}</div> {% endif %}

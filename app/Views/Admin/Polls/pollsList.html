@@ -1,0 +1,9 @@
+{% assign title = "Lista sondaggi (Admin)" %}
+{% assign cardtitle = "Lista votazioni"%}
+{% assign cardwidth = "100" %}
+{% extends "Templates/adminCentralCard" %}
+
+{% block content %}
+
+  {% include "Admin/Polls/pollsTable" %}
+{% endblock %}

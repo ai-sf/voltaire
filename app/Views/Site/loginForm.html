@@ -1,0 +1,21 @@
+
+  <form hx-post="{{"login" | url}}" hx-swap="outerHtml"  class="is-invalid">
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" hx-preserve class="form-control {% if login_invalid %} is-invalid {% endif %}" id="email" name="email" aria-describedby="emailHelp">
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="password" class="form-control {% if login_invalid %} is-invalid {% endif %}" id="password" name="password">
+      {% if login_invalid %}
+      <div class="invalid-feedback">
+        {{login_message}}
+      </div>
+      {% endif %}
+    </div>
+<div class="row">
+<div class="col col-auto mx-auto">
+  <button type="submit" class="mt-4 btn btn-primary">Login</button>
+</div>
+</div>
+  </form>

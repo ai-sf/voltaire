@@ -1,0 +1,61 @@
+
+<form x-data="{ answerCount: 1}" hx-post="{{"admin/polls/save" | url}}" hx-swap="outerHTML" >
+  {% if poll %}
+    <input type="hidden" name="poll-id" value="{{poll.id}}">
+  {% endif %}
+  <div class="row mb-5">
+    <div class="col-auto">
+      <label class="col-form-label" for="question">Domanda:</label>
+    </div>
+    <div class="col">
+      <input class="form-control" type="text" id="question" name="question" required
+      {% if poll %}
+        value="{{poll.title}}"
+      {% endif %}>
+      </textarea>
+    </div>
+  </div>
+
+
+  <div id="answers" x-data="{
+    answers: [
+        {% for answer in answers %}
+        {id : '{{answer.id}}', title: '{{answer.title}}'},
+        {% endfor %}
+    ]
+  }"
+
+  >
+    <template x-for="(answer, index)  in answers" :key="index">
+      <div class="row mb-3 align-items-center">
+        <div class="col-auto">
+          <label class="col-form-label" :for="'answer-' + answer.id" x-text=" 'Opzione #' + (index+1)"></label>
+        </div>
+        <div class="col">
+          <input placeholder="Scrivi la risposta" class="form-control" type="text" x-model="answer.title" :id="'answer-' + answer.id" :name="'answer-' + answer.id" :value="answer.title" required>
+        </div>
+        <div class="col-auto">
+          <a
+            class="btn btn-outline-danger btn-sm"
+            @click = "answers.splice(index, 1)"><i class="bi bi-trash3"></i></a>
+        </div>
+      </div>
+    </template>
+<div class="row">
+  <div class="col-auto ms-auto">
+    <button type="button" @click="answers.push({ id: 'n'+(answers.length+1), title: '' })" class="btn btn-outline-success btn-sm"><i class="bi bi-plus-lg"></i><span class="me-2"> Aggiungi opzione</button>
+    </span></div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-auto mx-auto">
+    <button type="submit" class="btn  btn-primary">Salva</button>
+
+  </div>
+</div>
+
+</form>
+
+{% if is_update %}
+<div id="toast-body" hx-swap-oob="true" class="toast-body">Votazione salvata correttamente</div>
+{% endif %}

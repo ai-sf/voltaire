@@ -1,0 +1,21 @@
+.sidenav-container{
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  width: 240px;
+}
+
+main{
+  margin-left: 260px;
+}
+
+.nav-icon{
+  display:inline-flex;
+  width:1.25em;
+}
+
+.subnav.small{
+  margin-left: 1.25em;
+}

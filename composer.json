@@ -1,0 +1,40 @@
+{
+    "name": "aisf/voltaire",
+    "description": "AISF voting system",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Roberto Ciccarelli",
+            "email": "robyciccarelli.rc@gmail.com"
+        }
+    ],
+    "require": {
+        "aisf/lepton": "@dev",
+        "liquid/liquid": "^1.4"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
+    },
+
+    "extra":{
+        "installer-paths":{
+          "lepton": ["aisf/lepton"]
+        }
+    },
+
+
+    "repositories": [{
+        "type": "path",
+        "url": "../lepton",
+        "options": {
+            "symlink": true
+        }
+    }]
+}

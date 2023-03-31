@@ -1,0 +1,49 @@
+  <table class="table table-hover  align-middle">
+    <thead>
+      <tr>
+        <th>ID</td>
+        <th>Nome</td>
+        <th>Data di creazione</td>
+        <th>Attivo</th>
+        <th>Azioni</td>
+      </tr>
+    </thead>
+    <tbody>
+      {% for poll in polls %}
+      <tr>
+        <td>{{poll.id}}</td>
+        <td>{{poll.title}}</td>
+        <td>{{poll.timestamp}}</td>
+        <td>
+          <div class="form-check form-switch">
+            <form id="form{{poll.id}}" hx-post="{{"admin/polls/activate" | url}}"
+              hx-trigger="change from:find input"
+              hx-target="#toast-body">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="status"
+                role="switch"
+                {% if poll.type == 1%} checked {% endif %}
+              >
+              <input type="hidden" name="id" value="{{poll.id}}">
+            </form>
+          </div>
+        </td>
+        <td>
+          <a hx-boost="true" href="{{"admin/polls/edit/" | append: poll.id | url}}" class="btn btn-primary btn-sm"><i class="bi bi-pencil"></i></a>
+          <a class="btn btn-secondary btn-sm"><i class="bi bi-easel"></i></a>
+          <a
+            class="btn btn-danger btn-sm"
+            hx-post="{{"admin/polls/delete" | url}}"
+            hx-vals='{"id": "{{poll.id}}" }'
+            hx-target="closest table"><i class="bi bi-trash3"></i></a>
+
+        </td>
+
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+

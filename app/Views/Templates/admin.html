@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <head>
+    {% include "Templates/head", title: title %}
+    <link rel="stylesheet" href="{{"css/admin.css" | url}} ">
+  </head>
+  <body>
+
+    <div class="container-fluid">
+      {% include "Templates/sidenav" %}
+
+        <main role="main" class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4">
+            {% block content %}
+              Content
+            {% endblock %}
+        </main>
+      </div>
+    </div>
+
+</main>
+
+
+    <a href="{{"logout" | url }}">Logout</a>
+    {% include "Templates/toast" %}
+
+  </body>
+</html>
