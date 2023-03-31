@@ -216,12 +216,21 @@ class AdminController extends BaseController
     #[LoginRequired(2)]
     public function saveUser()
     {
-        $authenticator = new UserAuthenticator();
-        $user = $authenticator->register($_POST["email"], level: $_POST["level"]);
+        $user = null;
+        if (isset($_POST["user-id"])) {
+            $user = User::get($_POST["user-id"]);
+            $user->email = $_POST["email"];
+            $user->level = $_POST["level"];
+        } else {
+            $authenticator = new UserAuthenticator();
+            $user = $authenticator->register($_POST["email"], level: $_POST["level"]);
+        }
         $user->name = $_POST["name"];
         $user->surname = $_POST["surname"];
         $user->active = isset($_POST["active"]) ? $_POST["active"] : 0;
         $user->save();
+
+
         return $this->render(
             "Admin/Users/userForm",
             [
@@ -275,5 +284,13 @@ class AdminController extends BaseController
             ],
             ['HX-Trigger' => 'showToast']
         );
+    }
+
+
+    #[LoginRequired(2)]
+    public function editUser($id)
+    {
+        $user = User::get($id);
+        return $this->render("Admin/Users/editUser", ["user" => $user]);
     }
 }

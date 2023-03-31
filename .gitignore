@@ -1,3 +1,4 @@
-config/*
+config/db.php
+config/email.php
 /vendor/
 config-deploy/*
