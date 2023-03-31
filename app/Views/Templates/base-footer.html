@@ -12,6 +12,12 @@
           <span class="fs-4 text-primary me-1 fw-bold"><i class="bi bi-check-circle"></i></span>
           <span class="fs-3 fw-bold">Voltaire</span>
         </a>
+
+        {% if user.level > 1 %}
+        <a class="btn btn-outline-primary" href="{{"admin" | url}}" style="position:absolute; right: 10px">
+          <i class="bi bi-tools me-2"></i>   Pannello amministratore
+        </a>
+        {% endif %}
       </div>
     </nav>
     <main class="min-vh-100">
@@ -34,7 +40,7 @@
   <footer class="bg-dark text-light py-3 mt-5">
     <div class="container text-center">
       <div>
-        Benvenuto/a, <span class="fw-bold"> {{ user.name }}, {{user.surname}} </span>
+        Benvenuto/a, <span class="fw-bold"> {{ user.name }} {{user.surname}} </span>
       </div>
       <div>
         <a href="{{"logout" | url }}" class="btn btn-outline-light btn-sm mt-2">Logout</a>
