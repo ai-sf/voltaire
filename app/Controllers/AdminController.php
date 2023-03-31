@@ -102,17 +102,17 @@ class AdminController extends BaseController
     #[LoginRequired(2)]
     public function savePoll()
     {
-        $question = $_POST["question"];
-        unset($_POST["question"]);
+
         if (array_key_exists("poll-id", $_POST)) {
             $poll = Poll::get($_POST["poll-id"]);
-            $poll->title = $question;
+            $poll->title = $_POST["question"];
             $poll->save();
             unset($_POST["poll-id"]);
         } else {
-            $poll = Poll::new(title: $question, description: "", access_code: "0000", type: 1);
+            $poll = Poll::new(title: $_POST["question"], description: "", access_code: "0000", active: 0);
             $poll->save();
         }
+        unset($_POST["question"]);
 
         $answers = PollAnswer::filter(poll: $poll);
         foreach ($answers as $answer) {
@@ -150,7 +150,7 @@ class AdminController extends BaseController
     #[LoginRequired(2)]
     public function pollsList()
     {
-        $polls = Poll::all();
+        $polls = Poll::all()->order_by("timestamp DESC");
         return $this->render("Admin/Polls/pollsList", ["polls" => $polls]);
     }
 
@@ -160,16 +160,33 @@ class AdminController extends BaseController
     public function activatePoll()
     {
         $poll = Poll::get(id: $_POST["id"]);
-        $poll->type = array_key_exists("status", $_POST) ? 1 : 0;
+        $poll->active = array_key_exists("active", $_POST) ? 1 : 0;
         $poll->save();
 
-        if ($poll->type) {
-            $text = "attivato";
-        } else {
-            $text = "disattivato";
-        }
-        return new HttpResponse(200, body: "Poll $text correttamente!");
+        $text = $poll->active ? "attivata" : "disattivata";
+
+        return $this->render(
+            "Admin/toaster",
+            ["message" => "Votazione $text correttamente!"],
+            headers: ['HX-Trigger' => 'showToast']
+        );
     }
+
+    #[LoginRequired(2)]
+    public function showResults()
+    {
+        $poll = Poll::get(id: $_POST["id"]);
+        $poll->show_results = array_key_exists("show_results", $_POST) ? 1 : 0;
+        $poll->save();
+
+        $text = $poll->show_results ? "mostrati" : "nascosti";
+
+        return $this->render(
+            "Admin/toaster",
+            ["message" => "Risultati $text correttamente!"],
+            headers: ['HX-Trigger' => 'showToast']
+        );    }
+
 
 
     #[LoginRequired(2)]
@@ -180,6 +197,33 @@ class AdminController extends BaseController
         $polls = Poll::all();
         return $this->render("Admin/Polls/pollsTable", ["polls" => $polls], ['HX-Trigger' => 'showToast']);
     }
+
+
+    #[LoginRequired(2)]
+    public function pollResults($id){
+        $poll = Poll::get($id);
+
+        return $this->render("Admin/Polls/pollResults", [
+            "poll" => $poll,
+        ]);
+    }
+
+
+    #[LoginRequired(2)]
+    public function pollGraph($id){
+        $poll = Poll::get($id);
+        $votes = Vote::filter(poll: $poll)->count();
+        $answers = PollAnswer::filter(poll: $poll);
+
+        return $this->render("Admin/Polls/pollGraph", [
+            "poll" => $poll,
+            "votes" => $votes,
+            "answers" => $answers
+        ]);
+    }
+
+
+
 
 
 

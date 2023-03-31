@@ -18,6 +18,9 @@ return [
   "admin/polls/save" => [AdminController::class, "savePoll"],
   "admin/polls/activate" => [AdminController::class, "activatePoll"],
   "admin/polls/delete" => [AdminController::class, "deletePoll"],
+  "admin/polls/showResults" => [AdminController::class, "showResults"],
+  "admin/polls/results/<int:id>" => [AdminController::class, "pollResults"],
+  "admin/polls/graph/<int:id>" => [AdminController::class, "pollGraph"],
 
   "admin/users" => [AdminController::class, "usersList"],
   "admin/users/new" => [AdminController::class, "newUser"],
@@ -26,5 +29,6 @@ return [
   "admin/users/sendMail/<int:id>" => [AdminController::class, "sendMail"],
   "admin/users/delete" => [AdminController::class, "deleteUser"],
   "admin/users/edit/<int:id>" =>  [AdminController::class, "editUser"]
+
 
 ];

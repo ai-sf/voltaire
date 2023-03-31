@@ -12,3 +12,21 @@ body{
 .htmx-request.my-indicator{
   display:inline;
 }
+
+
+.blink {
+  animation: blinker 4s linear infinite;
+}
+
+@keyframes blinker {
+  20% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 0;
+  }
+
+  90% {
+    opacity: 1;
+  }
+}

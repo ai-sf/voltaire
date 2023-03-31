@@ -1,0 +1,28 @@
+
+      {% for answer in answers %}
+            {% if votes != 0 %}
+                   {% assign percentage = answer.votes | divided_by: votes | times: 100.0 %}
+            {% else %}
+                  {% assign percentage = 0.0 %}
+            {% endif %}
+      <div class="row align-items-center mb-1 mt-4">
+            <div class="col">
+                  {{answer.title}}
+            </div>
+            <div class="col ms-auto small text-center">
+                  {{percentage}}%
+            </div>
+            <div class="col ms-auto small fw-bold text-muted text-end">
+                  {{answer.votes}} vot{% if answer.votes == 1%}o{% else %}i{% endif %}
+            </div>
+      </div>
+      <div class="progress"  style="height: 8px" role="progressbar" aria-valuenow="{{percentage}}" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar" id="progress{{answer.id}}" style="width: {{percentage}}%"></div>
+      </div>
+      {% endfor %}
+
+      <div class="row mt-5">
+            <div class="col col-auto ms-auto small fw-bold text-muted">
+                  Totale: {{votes}} vot{% if votes == 1%}o{% else %}i{% endif %}
+            </div>
+      </div>

@@ -5,7 +5,9 @@
         <th>Nome</td>
         <th>Data di creazione</td>
         <th>Attivo</th>
-        <th>Azioni</td>
+        <th>Risultati</th>
+        <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -16,20 +18,45 @@
         <td>{{poll.timestamp}}</td>
         <td>
           <div class="form-check form-switch">
-            <form id="form{{poll.id}}" hx-post="{{"admin/polls/activate" | url}}"
+            <form id="form-active{{poll.id}}" hx-post="{{"admin/polls/activate" | url}}"
               hx-trigger="change from:find input"
               hx-target="#toast-body">
               <input
                 class="form-check-input"
                 type="checkbox"
-                name="status"
+                name="active"
                 role="switch"
-                {% if poll.type == 1%} checked {% endif %}
+                {% if poll.active == 1%} checked {% endif %}
               >
               <input type="hidden" name="id" value="{{poll.id}}">
             </form>
           </div>
         </td>
+
+        <td>
+          <div class="form-check form-switch">
+            <form id="form-showresults{{poll.id}}" hx-post="{{"admin/polls/showResults" | url}}"
+              hx-trigger="change from:find input"
+              hx-target="#toast-body">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="show_results"
+                role="switch"
+                {% if poll.show_results == 1%} checked {% endif %}
+              >
+              <input type="hidden" name="id" value="{{poll.id}}">
+            </form>
+          </div>
+        </td>
+
+        <td>
+          <a href="{{"admin/polls/results/" | append: poll.id | url}}" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-graph-up-arrow"></i>
+            <span class="ms-2">Risultati</span>
+          </a>
+        </td>
+
         <td>
           <a hx-boost="true" href="{{"admin/polls/edit/" | append: poll.id | url}}" class="btn btn-primary btn-sm"><i class="bi bi-pencil"></i></a>
           <a class="btn btn-secondary btn-sm"><i class="bi bi-easel"></i></a>

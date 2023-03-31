@@ -1,0 +1,19 @@
+{% assign title = "Lista sondaggi (Admin)" %}
+{% assign cardtitle = "Risultati della votazione" %}
+
+{% if poll.active %}
+      {% assign cardstyle = "live" %}
+{% endif %}
+{% extends "Templates/adminCentralCard" %}
+
+{% block content %}
+
+<div class="container">
+      <h5> {{poll.title}}</h5>
+</div>
+
+<div class="container mb-4" hx-get="{{"admin/polls/graph/" | append: poll.id  | url}}" hx-trigger="load, every 2s">
+</div>
+
+
+{% endblock %}

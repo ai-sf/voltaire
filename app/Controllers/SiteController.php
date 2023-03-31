@@ -51,7 +51,7 @@ class SiteController extends BaseController
     #[LoginRequired(level: 1)]
     public function index()
     {
-        $polls = Poll::filter(type: 1);
+        $polls = Poll::filter(active: 1);
         $toVote = array();
         $authenticator = new UserAuthenticator();
         $user = $authenticator->getLoggedUser();
@@ -103,9 +103,10 @@ class SiteController extends BaseController
                 $answer = $answers->first();
 
                 if ($votes < $user->votes) {
-                    if($poll->type == 1){
+                    if($poll->active == 1){
                         $vote = Vote::new(poll: $poll, user: $user);
                         $answer->votes = $answer->votes + 1;
+                        $answer->save();
                         $vote->save();
                         if($votes + 1 < $user->votes){
                             $answers = PollAnswer::filter(poll: $poll);

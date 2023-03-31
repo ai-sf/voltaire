@@ -19,3 +19,8 @@ main{
 .subnav.small{
   margin-left: 1.25em;
 }
+
+
+.progress .progress-bar{
+  transition: width 0.3s ease;
+}
