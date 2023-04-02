@@ -191,7 +191,8 @@ class AdminController extends BaseController
             "Admin/toaster",
             ["message" => "Risultati $text correttamente!"],
             headers: ['HX-Trigger' => 'showToast']
-        );    }
+        );
+    }
 
 
 
@@ -206,7 +207,8 @@ class AdminController extends BaseController
 
 
     #[LoginRequired(2)]
-    public function pollResults($id){
+    public function pollResults($id)
+    {
         $poll = Poll::get($id);
 
         return $this->render("Admin/Polls/pollResults", [
@@ -216,7 +218,8 @@ class AdminController extends BaseController
 
 
     #[LoginRequired(2)]
-    public function pollGraph($id){
+    public function pollGraph($id)
+    {
         $poll = Poll::get($id);
         $votes = Vote::filter(poll: $poll)->count();
         $answers = PollAnswer::filter(poll: $poll);
@@ -298,7 +301,8 @@ class AdminController extends BaseController
     }
 
 
-    private function doUserSave($id = null, $email, $level, $name, $surname, $votes, $active = null){
+    private function doUserSave($id = null, $email, $level, $name, $surname, $votes, $active = null)
+    {
         $user = null;
         if (! is_null($id)) {
             $user = User::get($id);
@@ -323,22 +327,23 @@ class AdminController extends BaseController
 
 
     #[LoginRequired(2)]
-    public function userBatchUpload(){
+    public function userBatchUpload()
+    {
 
         if (isset($_FILES['csvfile'])) {
             $n = 0;
             $csvfile = $_FILES['csvfile']['tmp_name'];
-            if (($handle = fopen($csvfile, "r")) !== FALSE) {
+            if (($handle = fopen($csvfile, "r")) !== false) {
                 fgetcsv($handle, 1000, ",");
-                while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                while (($data = fgetcsv($handle, 1000, ",")) !== false) {
                     if($this->doUserSave(
                         id: null,
                         email: $data[2],
                         level: intval($data[3]),
                         name: $data[0],
                         surname: $data[1],
-                        votes: intval($data[4])))
-                    {
+                        votes: intval($data[4])
+                    )) {
                         $n++;
                     }
 
@@ -347,8 +352,11 @@ class AdminController extends BaseController
             }
         }
 
-        return new HttpResponse(200, headers: ["HX-Trigger" => "reload-users"],
-        body: "<div id='post-result-inner' class='rounded container bg-success text-white py-2 px-3 small'>Caricati $n utenti</div>");
+        return new HttpResponse(
+            200,
+            headers: ["HX-Trigger" => "reload-users"],
+            body: "<div id='post-result-inner' class='rounded container bg-success text-white py-2 px-3 small'>Caricati $n utenti</div>"
+        );
     }
 
 
@@ -362,7 +370,7 @@ class AdminController extends BaseController
         $mail = new Mailer();
 
         $subject = 'Credenziali sistema di voto AGA 2023';
-        $body = sprintf("Username: %s <br/>Password: %s", $user->email, $password);
+        $body = $this->render("Admin/loginEmail", ["name" => $user->name, "username" => $user->email, "password" => $password]);//sprintf("Username: %s <br/>Password: %s", $user->email, $password);
 
         if ($mail->send($user->email, $subject, $body)) {
             $message = "Email inviata correttamente";
@@ -405,27 +413,27 @@ class AdminController extends BaseController
 
 
     #[LoginRequired(2)]
-    public function userSearch(){
+    public function userSearch()
+    {
         $allowed = ["name", "surname", "level", "active"];
         $filters = array();
 
-        foreach($allowed as $filter){
-            if(isset($_POST[$filter]) && $_POST[$filter] != ""){
+        foreach($allowed as $filter) {
+            if(isset($_POST[$filter]) && $_POST[$filter] != "") {
                 $filters[$filter."__startswith"] = $_POST[$filter];
             }
         }
-        if(count($filters)> 0)
-        {
-            $users = User::filter(...$filters );
-        } else
-        {
-            $users = User::all(...$filters );
+        if(count($filters)> 0) {
+            $users = User::filter(...$filters);
+        } else {
+            $users = User::all(...$filters);
         }
         return $this->render("Admin/Users/usersTable", ["users" => $users, "num_users" => $users->count()]);
     }
 
     #[LoginRequired(2)]
-    public function batchAction(){
+    public function batchAction()
+    {
 
         $actionsMap = [
             "activate" => "activateUser",
@@ -433,7 +441,7 @@ class AdminController extends BaseController
             "delete" => "deleteUser"
         ];
 
-        foreach($_POST["user-checkbox"] as $id){
+        foreach($_POST["user-checkbox"] as $id) {
             switch ($_POST["action"]) {
                 case 'activate':
                     $this->activateUser($id, 1);
@@ -451,10 +459,14 @@ class AdminController extends BaseController
                     break;
             }
         }
-        return $this->render("Admin/toaster", ["message" => "Azione eseguita con successo"],
+        return $this->render(
+            "Admin/toaster",
+            ["message" => "Azione eseguita con successo"],
             headers: ["HX-Trigger" => '{"showToast" : "", "reload-users": ""}']
         );
     }
-
+/*
+    public function loginEmailPreview(){
+        return $this->render("Admin/loginEmail", ["name" => "Roberto", "username" => "rrr@gmail.com", "password" => "culo"]);
+    }*/
 }
-

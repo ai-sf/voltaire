@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Our page title</title>
+
+		<!--[if gte mso 9]><xml>
+	      <o:OfficeDocumentSettings>
+		    <o:AllowPNG/>
+		    <o:PixelsPerInch>96</o:PixelsPerInch>
+		  </o:OfficeDocumentSettings>
+		</xml><![endif]-->
+ <style>
+    html{
+      background-color: #cccccc;
+    }
+    body{
+      font-family: Helvetica, sans-serif;
+      font-size: 18pt;
+      font-weight: 600;
+      background-color: #4582ec;
+      margin: 0px;
+      padding: 0px;
+    }
+
+   a{
+     text-decoration: underline;
+     font-weight: bold;
+     color: #4582ec !important;
+
+   }
+
+   h1 {
+     font-size: 56px;
+   }
+
+     h2{
+     font-size: 28px;
+     font-weight: 900;
+   }
+
+
+   #email {
+     margin: auto;
+     width: 100%;
+     font-size: 16px;
+     color: black;
+     background-color: white;
+    }
+
+   #credenziali{
+    text-align:center;
+
+   }
+
+
+
+   .bold{
+    font-weight: 800;
+    line-height: 24pt;
+   }
+
+   .code{
+    font-family: 'Courier', monospace !important;
+    line-height: 24pt !important;
+    color: #e83e8c !important;
+    font-weight: bold;
+   }
+
+   .code a{
+    font-family: 'Courier', monospace !important;
+    line-height: 24pt !important;
+    color: #e83e8c !important;
+    font-weight: bold;
+   }
+
+  #header{
+    width: 100%;
+    background-color: #2460c7;
+    min-height: 200px;
+    color: white;
+    padding: 40pt 10pt;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  #header img{
+    width: 50pt;
+  }
+
+  #header div.title{
+    font-size: 40pt;
+    font-weight: bold;
+  }
+
+
+  #header div.subtitle{
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    line-height: 120%;
+  }
+
+  #header div.author{
+    font-size: 12pt;
+    margin-top: 5pt;
+  }
+  #email-content{
+    padding: 0pt 40px;
+  }
+
+  #firma{
+    display: flex;
+  }
+
+  #firma img{
+    width: 300pt;
+    max-width:50%;
+  }
+   </style>
+</head>
+
+<body style="margin:0;padding:0;min-width:100%;background-color:#cccccc;">
+
+
+
+  <div id="email">
+    <div id="header">
+      <img src="https://www.ai-sf.it/voltaire/img/voltaire.png">
+      <div class="title">Voltaire</div>
+      <div class="subtitle">Voting On Line Technology and Interactive Results Engine</div>
+      <div class="author">by AISF</div>
+  </div>
+  <div id="email-content">
+    <p>Ciao, {{name}}!</p>
+    <p>Ti diamo il benvenuto in <b>Voltaire</b>, il sistema di votazione per AGA2023!</p>
+    <p>Puoi accedervi al seguente link: <a href="https://www.ai-sf.it/voltaire" target="_blank">ai-sf.it/voltaire</a>.</p>
+    <p>Le tue credenziali di accesso sono:</p><br/>
+    <div id="credenziali">
+      <div id="#username">
+        <div>Username</div>
+        <div class="code">
+            {{username}}
+          </div>
+        </div><br/>
+        <div id="password">
+          <div>
+            Password</div><div class="code">
+            {{password}}
+            </div>
+          </div>
+        </div>
+
+    <p>Conservale con cura!</p>
+    <p>Per qualsiasi domanda o problema, non esitare a contattare il Comitato Esecutivo (<a href="mailto:esecutivo@ai-sf.it">esecutivo@ai-sf.it)</a></p>
+
+    <p>A presto,</p>
+    <div id="firma">
+      <img src="https://www.ai-sf.it/voltaire/img/firmaesecutivo.jpg">
+    </div>
+
+  </div>
+
+
+  </div>
+</body>
+
+</html>

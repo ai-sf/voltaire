@@ -32,5 +32,7 @@ return [
   "admin/users/edit/<int:id>" =>  [AdminController::class, "editUser"],
   "admin/users/batchAction" => [AdminController::class, "batchAction"],
   "admin/users/search" => [AdminController::class, "userSearch"],
-  "admin/users/batchUpload" => [AdminController::class, "userBatchUpload"]
+  "admin/users/batchUpload" => [AdminController::class, "userBatchUpload"],
+  "admin/loginEmail" => [AdminController::class, "loginEmailPreview"]
+
 ];
