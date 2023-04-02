@@ -195,7 +195,7 @@ class AdminController extends BaseController
         $toDelete = Poll::get(id: $_POST["id"]);
         $toDelete->delete();
         $polls = Poll::all();
-        return $this->render("Admin/Polls/pollsTable", ["polls" => $polls], ['HX-Trigger' => 'showToast']);
+        return $this->render("Admin/Polls/pollsTable", ["polls" => $polls, "message" => "Votazione eliminata con successo!", "is_update"=>true], ['HX-Trigger' => 'showToast']);
     }
 
 
@@ -280,6 +280,7 @@ class AdminController extends BaseController
         $user->name = $_POST["name"];
         $user->surname = $_POST["surname"];
         $user->active = isset($_POST["active"]) ? $_POST["active"] : 0;
+        $user->votes = $_POST["votes"];
         $user->save();
 
 
@@ -344,5 +345,10 @@ class AdminController extends BaseController
     {
         $user = User::get($id);
         return $this->render("Admin/Users/editUser", ["user" => $user]);
+    }
+
+    #[LoginRequired(2)]
+    public function userForm(){
+        die(print_r($_POST));
     }
 }
