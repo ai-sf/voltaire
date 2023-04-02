@@ -7,55 +7,85 @@
 {% block content %}
 
 
-<div class="container" hx-trigger="reload-users from:body" id="user-table-container" hx-post="{{"admin/users/search" | url}}">
-  {% include "Admin/Users/usersTable" %}
-</div>
+<div class="container" >
+  <div>
+    <div  x-data="{ checked: [], selectAll: false}">
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <form hx-post="{{"admin/users/batchUpload" | url}}" hx-target="#post-result" hx-encoding='multipart/form-data'>
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Carica utenti</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p>Selezionare un file .csv contenente gli utenti. Il file deve avere la struttura seguente </p>
-        <table class="table table-bordered">
-          <thead>
-            <th>Nome</th>
-            <th>Cognome</th>
-            <th>Email</th>
-            <th>Ruolo</th>
-            <th>Numero voti</th>
-          </thead>
-          <tr>
-            <td>...</td>
-            <td>...</td>
-            <td>...</td>
-            <td>...</td>
-            <td>...</td>
-          </tr>
-        </table>
-        <p>        Per <code>Ruolo</code>, usare la conversione <code>1 => Utente; 2 => Admin</code>.
-        </p>
-        <p>
-          La prima riga verrà considerata come riga di intestazione e quindi ignorata.
-        </p>
-        <div class="mb-3">
-          <input class="form-control form-control-sm" type="file" name="csvfile" id="formFile">
+      <div class="row mb-3" id="upper-controls" hx-preserve>
+
+        <div class="col-auto" x-show="checked.length>0" x-cloak x-transition >
+          <form id="user-select" hx-post="{{"admin/users/batchAction" | url}}" hx-swap="none">
+
+          <button type="submit" name="action" value="activate" class="btn btn-outline-primary py-1 px-3 me-2"><i class="bi bi-check-circle-fill me-2"></i><span>Abilita</span></button>
+          <button type="submit" name="action" value="deactivate" class="btn btn-outline-primary py-1 px-3 me-2"><i class="bi bi-dash-circle-fill me-2"></i><span>Disabilita</span></button>
+          <button type="submit" name="action" value="sendmail" class="btn btn-outline-primary py-1 px-3 me-2"><i class="bi bi-envelope-at-fill me-2"></i><span>Invia email</span></button>
+          <button type="submit" name="action" value="delete" class="btn btn-outline-danger py-1 px-3 me-2 ms-5"><i class="bi bi-trash-fill me-2"></i><span>Elimina</span></button>
+        </form>
+
         </div>
-        <div id="post-result" hx-swap="innerHTML"></div>
+        <div class="col-auto ms-auto">
+          <a  class="ms-auto btn btn-outline-warning py-1 px-3 me-2" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bi bi-upload me-2"></i><span>Carica utenti</span> </a>
+          <a href="{{"admin/users/new" | url}}" class="ms-auto btn btn-outline-success py-1 px-3"><i class="bi bi-plus-lg me-2"></i><span>Nuovo utente</span> </a>
+        </div>
       </div>
-      <div class="modal-footer" id="modal-footer">
-        <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Chiudi</button>
-        <button type="submit" class="btn btn-primary">Carica</button>
-      </div>
-    </form>
-    </div>
+
+
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>
+            <input  hx-preserve class="form-check-input" type="checkbox" name="{{user.id}}" value="1" form="user-select" id="master" x-model="selectAll" x-ref="master" @change="
+            checked = !selectAll ? [] : Array.from(document.querySelectorAll('.user-checkbox')).map(x => x.value);"  >
+          </th>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Cognome</th>
+          <th>Ruolo</th>
+          <th>Numero Voti</th>
+          <th>Abilitato </th>
+          <th class="w-25 fst-italic fw-normal text-end">{{num_users}} risultat{% if num_users == 1%}o{% else %}i{% endif %}</th>
+        </tr>
+        <tr hx-preserve id="serchRow">
+          <form hx-post="{{"admin/users/search" | url }}" hx-target = "tbody" hx-trigger="keyup from:input delay:500ms, change from:select">
+          <td></td>
+          <td></td>
+          <td>
+            <input class="form-control form-control-sm .search"  type="text" name="name" id="searchName" placeholder="Nessun filtro" >
+          </td>
+          <td>
+            <input class="form-control form-control-sm" type="text" name="surname" placeholder="Nessun filtro">
+          </td>
+
+          <td>
+            <select class="form-select form-select-sm" aria-label="Default select example" name="level" id="level">
+              <option value=""> Tutti</option>
+              <option value="1" >Utente</option>
+              <option value="2" >Admin</option>
+            </select>
+          </td>
+          <td></td>
+
+          <td>
+            <select class="form-select form-select-sm" aria-label="Default select example" name="active" id="level">
+              <option value=""> Tutti</option>
+              <option value="1" >Abilitato</option>
+              <option value="2" >Disabilitato</option>
+            </select>
+          </td>
+          <td></td>
+          </form>
+        </tr>
+      </thead>
+      <tbody hx-trigger="reload-users from:body" id="user-table-container" hx-ext="alpine-morph" hx-swap="innerHtml" hx-post="{{"admin/users/search" | url}}">
+        {% include "Admin/Users/usersTable" %}
+      </tbody>
+</table>
+
+</div>
   </div>
 </div>
 
 
+
+{% include "Admin/modal" %}
 {% endblock %}

@@ -52,6 +52,12 @@ class AdminController extends BaseController
                     ]
                 ]
             ],
+            [
+                "title" => "Proiettore",
+                "link" => "admin/projector",
+                "icon" => "projector-fill",
+                "target" => "_blank"
+            ]
 
         ]
     ];
@@ -239,10 +245,10 @@ class AdminController extends BaseController
 
 
     #[LoginRequired(2)]
-    public function activateUser()
+    public function activateUser($id, $status=0)
     {
-        $user = User::get(id: $_POST["id"]);
-        $user->active = array_key_exists("status", $_POST) ? 1 : 0;
+        $user = User::get(id: $id);
+        $user->active = $status;
         $user->save();
 
         if ($user->active) {
@@ -302,12 +308,17 @@ class AdminController extends BaseController
             $authenticator = new UserAuthenticator();
             $user = $authenticator->register($email, $level);
         }
-        $user->name = $name;
-        $user->surname = $surname;
-        $user->active = is_null($active) ? 0 : $active;
-        $user->votes = $votes;
-        $user->save();
-        return $user;
+
+        if ($user) {
+            $user->name = $name;
+            $user->surname = $surname;
+            $user->active = is_null($active) ? 0 : $active;
+            $user->votes = $votes;
+            $user->save();
+            return $user;
+        } else {
+            return 0;
+        }
     }
 
 
@@ -318,23 +329,26 @@ class AdminController extends BaseController
             $n = 0;
             $csvfile = $_FILES['csvfile']['tmp_name'];
             if (($handle = fopen($csvfile, "r")) !== FALSE) {
-
+                fgetcsv($handle, 1000, ",");
                 while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-                    $this->doUserSave(
+                    if($this->doUserSave(
                         id: null,
                         email: $data[2],
                         level: intval($data[3]),
                         name: $data[0],
                         surname: $data[1],
-                        votes: intval($data[4]));
-                    $n++;
+                        votes: intval($data[4])))
+                    {
+                        $n++;
+                    }
+
                 }
                 fclose($handle);
             }
         }
 
         return new HttpResponse(200, headers: ["HX-Trigger" => "reload-users"],
-        body: "<div id='post-result' hx-swap='innerHTML' class='rounded container bg-success text-white py-2 px-3 small'>Caricati $n utenti</div>");
+        body: "<div id='post-result-inner' class='rounded container bg-success text-white py-2 px-3 small'>Caricati $n utenti</div>");
     }
 
 
@@ -365,9 +379,9 @@ class AdminController extends BaseController
 
 
     #[LoginRequired(2)]
-    public function deleteUser()
+    public function deleteUser($id)
     {
-        $toDelete = User::get(id: $_POST["id"]);
+        $toDelete = User::get(id: $id);
         $toDelete->delete();
         $users= User::all();
         return $this->render(
@@ -387,11 +401,6 @@ class AdminController extends BaseController
     {
         $user = User::get($id);
         return $this->render("Admin/Users/editUser", ["user" => $user]);
-    }
-
-    #[LoginRequired(2)]
-    public function userForm(){
-        die(print_r($_POST));
     }
 
 
@@ -414,4 +423,38 @@ class AdminController extends BaseController
         }
         return $this->render("Admin/Users/usersTable", ["users" => $users, "num_users" => $users->count()]);
     }
+
+    #[LoginRequired(2)]
+    public function batchAction(){
+
+        $actionsMap = [
+            "activate" => "activateUser",
+            "deactivate" => "activateUser",
+            "delete" => "deleteUser"
+        ];
+
+        foreach($_POST["user-checkbox"] as $id){
+            switch ($_POST["action"]) {
+                case 'activate':
+                    $this->activateUser($id, 1);
+                    break;
+                case 'deactivate':
+                    $this->activateUser($id, 0);
+                    break;
+                case 'delete':
+                    $this->deleteUser($id);
+                    break;
+                case 'sendmail':
+                    $this->sendMail($id);
+                    break;
+                default:
+                    break;
+            }
+        }
+        return $this->render("Admin/toaster", ["message" => "Azione eseguita con successo"],
+            headers: ["HX-Trigger" => '{"showToast" : "", "reload-users": ""}']
+        );
+    }
+
 }
+

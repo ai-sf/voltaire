@@ -10,12 +10,13 @@
       {% assign on_page = el.link | url%}
         <li class="nav-item">
           {% assign sublink = el.link | sublink: page %}
-          <a hx-boost="true"
+          <a
             href="{{el.link | url }}"
             class="nav-link text-white mb-1
               {% if sublink %} active mb-2 {% endif %}
             "
             aria-current="page"
+            {% if el.target %} target="{{el.target}}" {% endif %}
           >
             <span class="nav-icon"><i class="bi bi-{{el.icon}}"></i></span>
             <span   {% if page == on_page %} class="fw-bold" {% endif %}>{{el.title}}</span>
@@ -25,7 +26,7 @@
           {% for subel in el.subnav %}
           {% assign on_page = subel.link | url%}
           <li class="nav-item small subnav">
-            <a  hx-boost="true" href="{{on_page}}"
+            <a href="{{on_page}}"
                   class=" nav-link py-0 text-white mb-1
                     {% if page == on_page %} fw-bold {% endif %}
                   ">{{subel.title}}</a>

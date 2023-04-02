@@ -13,9 +13,9 @@
           <span class="fs-3 fw-bold">Voltaire</span>
         </a>
 
-        {% if user.level > 1 %}
+        {% if logged_user.level > 1 %}
         <a class="btn btn-outline-primary" href="{{"admin" | url}}" style="position:absolute; right: 10px">
-          <i class="bi bi-tools"></i>   <span class="ms-2 d-none d-lg-inline">Pannello amministratore </span>
+          <i class="bi bi-tools"></i>   <span class="ms-2 d-none d-lg-i">Pannello amministratore </span>
         </a>
         {% endif %}
       </div>
@@ -40,7 +40,7 @@
   <footer class="bg-dark text-light py-3 mt-5">
     <div class="container text-center">
       <div>
-        Benvenuto/a, <span class="fw-bold"> {{ user.name }} {{user.surname}} </span>
+        Benvenuto/a, <span class="fw-bold"> {{ logged_user.name }} {{logged_user.surname}} </span>
       </div>
       <div>
         <a href="{{"logout" | url }}" class="btn btn-outline-light btn-sm mt-2">Logout</a>

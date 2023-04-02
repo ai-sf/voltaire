@@ -1,0 +1,45 @@
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form hx-post="{{"admin/users/batchUpload" | url}}" hx-target="#post-result" hx-encoding='multipart/form-data'>
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Carica utenti</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Selezionare un file .csv contenente gli utenti. Il file deve avere la struttura seguente </p>
+        <table class="table table-bordered">
+          <thead>
+            <th>Nome</th>
+            <th>Cognome</th>
+            <th>Email</th>
+            <th>Ruolo</th>
+            <th>Numero voti</th>
+          </thead>
+          <tr>
+            <td>...</td>
+            <td>...</td>
+            <td>...</td>
+            <td>...</td>
+            <td>...</td>
+          </tr>
+        </table>
+        <p>        Per <code>Ruolo</code>, usare la conversione <code>1 => Utente; 2 => Admin</code>.
+        </p>
+        <p>
+          La prima riga verrà considerata come riga di intestazione e quindi ignorata.
+        </p>
+        <div class="mb-3">
+          <input class="form-control form-control-sm" type="file" name="csvfile" id="formFile">
+        </div>
+        <div id="post-result" hx-swap="innerHTML"></div>
+      </div>
+      <div class="modal-footer" id="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick='el = document.querySelector("#post-result-inner"); if(el !== null) el.remove()' data-bs-dismiss="modal">Chiudi</button>
+        <button type="submit" class="btn btn-primary">Carica</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>

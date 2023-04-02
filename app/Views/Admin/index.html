@@ -1,14 +1,16 @@
-{% assign title = "Lista sondaggi (Admin)" %}
+{% assign title = "Admin" %}
+{% assign cardtitle = "Home" %}
 
-{% extends "Templates/admin" %}
+{% extends "Templates/adminCentralCard" %}
 
 {% block content %}
+<div class="d-flex flex-column align-items-center">
 
-<h1>Voltaire - Lista votazioni (admin)</h1>
+  <a class="btn btn-primary btn-lg w-50 my-2" href="{{"admin/users" | url}}"><i class="bi bi-bar-chart me-2"></i> Votazioni</a>
+  <a class="btn btn-info btn-lg w-50 my-2" href="{{"admin/polls" | url}}"> <i class="bi bi-people me-3"></i>Utenti</a>
+  <a class="btn btn-success btn-lg w-50 my-2" href="{{"admin/projector" | url}}"><i class="bi bi-projector me-2"></i>Proiettore</a>
 
-{% for poll in polls %}
-{% assign poll_url = "polls/"  | append: poll.id | url  %}
-<p> <a href="{{poll_url }}">{{poll.title}}</a> </p>
-{% endfor %}
+</div>
+
 
 {% endblock %}
