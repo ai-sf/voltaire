@@ -27,7 +27,9 @@ return [
   "admin/users/save" => [AdminController::class, "saveUser"],
   "admin/users/activate" => [AdminController::class, "activateUser"],
   "admin/users/sendMail/<int:id>" => [AdminController::class, "sendMail"],
-  "admin/users/delete" => [AdminController::class, "deleteUser"],
+  "admin/users/delete/<int:id>" => [AdminController::class, "deleteUser"],
   "admin/users/edit/<int:id>" =>  [AdminController::class, "editUser"],
-  "admin/users/form" => [AdminController::class, "userForm"]
+  "admin/users/batchAction" => [AdminController::class, "userForm"],
+  "admin/users/search" => [AdminController::class, "userSearch"],
+  "admin/users/batchUpload" => [AdminController::class, "userBatchUpload"]
 ];

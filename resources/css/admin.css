@@ -21,6 +21,15 @@ main{
 }
 
 
+#central-card{
+  transition: all 0.8s ease;
+}
+
+
 .progress .progress-bar{
   transition: width 0.3s ease;
+}
+
+#sidenav{
+  transition: all 0.3s ease
 }

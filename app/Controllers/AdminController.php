@@ -234,7 +234,7 @@ class AdminController extends BaseController
     public function usersList()
     {
         $users = User::all();
-        return $this->render("Admin/Users/usersList", ["users" => $users]);
+        return $this->render("Admin/Users/usersList", ["users" => $users, "num_users" => $users->count()]);
     }
 
 
@@ -268,20 +268,16 @@ class AdminController extends BaseController
     #[LoginRequired(2)]
     public function saveUser()
     {
-        $user = null;
-        if (isset($_POST["user-id"])) {
-            $user = User::get($_POST["user-id"]);
-            $user->email = $_POST["email"];
-            $user->level = $_POST["level"];
-        } else {
-            $authenticator = new UserAuthenticator();
-            $user = $authenticator->register($_POST["email"], level: $_POST["level"]);
-        }
-        $user->name = $_POST["name"];
-        $user->surname = $_POST["surname"];
-        $user->active = isset($_POST["active"]) ? $_POST["active"] : 0;
-        $user->votes = $_POST["votes"];
-        $user->save();
+
+        $user = $this->doUserSave(
+            isset($_POST["user-id"]) ? $_POST["user-id"] : null,
+            $_POST["email"],
+            $_POST["level"],
+            $_POST["name"],
+            $_POST["surname"],
+            isset($_POST["active"]) ? $_POST["active"] : 0,
+            $_POST["votes"]
+        );
 
 
         return $this->render(
@@ -293,6 +289,52 @@ class AdminController extends BaseController
             ],
             ['HX-Trigger' => 'showToast']
         );
+    }
+
+
+    private function doUserSave($id = null, $email, $level, $name, $surname, $votes, $active = null){
+        $user = null;
+        if (! is_null($id)) {
+            $user = User::get($id);
+            $user->email =  $email;
+            $user->level = $level;
+        } else {
+            $authenticator = new UserAuthenticator();
+            $user = $authenticator->register($email, $level);
+        }
+        $user->name = $name;
+        $user->surname = $surname;
+        $user->active = is_null($active) ? 0 : $active;
+        $user->votes = $votes;
+        $user->save();
+        return $user;
+    }
+
+
+    #[LoginRequired(2)]
+    public function userBatchUpload(){
+
+        if (isset($_FILES['csvfile'])) {
+            $n = 0;
+            $csvfile = $_FILES['csvfile']['tmp_name'];
+            if (($handle = fopen($csvfile, "r")) !== FALSE) {
+
+                while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                    $this->doUserSave(
+                        id: null,
+                        email: $data[2],
+                        level: intval($data[3]),
+                        name: $data[0],
+                        surname: $data[1],
+                        votes: intval($data[4]));
+                    $n++;
+                }
+                fclose($handle);
+            }
+        }
+
+        return new HttpResponse(200, headers: ["HX-Trigger" => "reload-users"],
+        body: "<div id='post-result' hx-swap='innerHTML' class='rounded container bg-success text-white py-2 px-3 small'>Caricati $n utenti</div>");
     }
 
 
@@ -350,5 +392,26 @@ class AdminController extends BaseController
     #[LoginRequired(2)]
     public function userForm(){
         die(print_r($_POST));
+    }
+
+
+    #[LoginRequired(2)]
+    public function userSearch(){
+        $allowed = ["name", "surname", "level", "active"];
+        $filters = array();
+
+        foreach($allowed as $filter){
+            if(isset($_POST[$filter]) && $_POST[$filter] != ""){
+                $filters[$filter."__startswith"] = $_POST[$filter];
+            }
+        }
+        if(count($filters)> 0)
+        {
+            $users = User::filter(...$filters );
+        } else
+        {
+            $users = User::all(...$filters );
+        }
+        return $this->render("Admin/Users/usersTable", ["users" => $users, "num_users" => $users->count()]);
     }
 }
