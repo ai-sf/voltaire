@@ -4,7 +4,7 @@
     {% include "Templates/head", title: title %}
     <link rel="stylesheet" href="{{"css/admin.css" | url}} ">
   </head>
-  <body>
+  <body  hx-ext="morph">
 
     <div class="container-fluid">
       {% include "Templates/sidenav" %}
@@ -14,9 +14,9 @@
         {% assign cardwidth = "50" %}
       {% endif %}
 
-        <main role="main" class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4">
+        <main role="main" class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4" id="main" >
           <div class="row">
-            <div class="col-auto mx-auto container" style="min-width: {{cardwidth}}%;">
+            <div class="col-auto mx-auto container" style="max-width: {{cardwidth}}; min-width: {{cardwidth}}%;" id="central-card" hx-swap="morphdom">
               <div class="card shadow-lg" >
                 <div class="card-header ">
                   <div class="row align-items-center">

@@ -30,5 +30,7 @@ body{
     opacity: 1;
   }
 }
-
+p{
+  font-family: var(--bs-body-font-family)!important;
+}
 [x-cloak] { display: none !important; }
