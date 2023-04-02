@@ -29,15 +29,23 @@
   </div>
   <div class="row mb-3 align-items-center">
     <label for="level" class="col-sm-2 col-form-label">Ruolo</label>
-    <div class="col">
+    <div class="col-auto">
       <select class="form-select" aria-label="Default select example" name="level" id="level">
         <option value="1" {% if user.level == 1 %} selected {% endif %}>User</option>
         <option value="2" {% if user.level == 2 %} selected {% endif %}>Admin</option>
       </select>
       </div>
+
+      <div class="col"></div>
+
+      <label for="level" class="col-auto col-form-label text-end">N. voti</label>
+    <div class="col">
+      <input type="number" class="form-control" id="votes" name="votes" value="{{user.votes}}">
+
+    </div>
     <div class="col"></div>
-    <label for="role" class="col-sm-2 ms-auto">Abilitato</label>
-    <div class="col-auto form-check form-switch">
+    <div class="col-auto form-check form-switch form-check-reverse me-3">
+      <label for="role" >Abilitato</label>
       <input
       class="form-check-input"
       type="checkbox"
@@ -46,6 +54,7 @@
       value="1"
       {% if user.active == 1 %} checked {% endif %}
     >
+  </div>
   </div>
 
   <div class="row">

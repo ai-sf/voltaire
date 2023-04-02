@@ -1,26 +1,86 @@
-  <table class="table table-hover  align-middle">
+  <div x-data="{ checked: [], selectAll: false}">
+
+    <div class="row mb-3">
+
+      <div class="col-auto" x-show="checked.length>0" x-cloak x-transition >
+        <form id="user-select" hx-post="{{"admin/users/form" | url}}">
+
+        <button type="submit" class="btn btn-outline-primary py-1 px-3 me-2"><i class="bi bi-check-circle-fill me-2"></i><span>Abilita</span></button>
+        <button type="submit" class="btn btn-outline-primary py-1 px-3 me-2"><i class="bi bi-dash-circle-fill me-2"></i><span>Disabilita</span></button>
+        <button type="submit" class="btn btn-outline-primary py-1 px-3 me-2"><i class="bi bi-envelope-at-fill me-2"></i><span>Invia email</span></button>
+        <button type="submit" class="btn btn-outline-danger py-1 px-3 me-2 ms-5"><i class="bi bi-trash-fill me-2"></i><span>Elimina</span></button>
+      </form>
+
+      </div>
+      <div class="col-auto ms-auto">
+        <a  class="ms-auto btn btn-outline-warning py-1 px-3 me-2"><i class="bi bi-upload me-2"></i><span>Carica utenti</span> </a>
+        <a  class="ms-auto btn btn-outline-success py-1 px-3"><i class="bi bi-plus-lg me-2"></i><span>Nuovo utente</span> </a>
+      </div>
+    </div>
+
+
+  <table class="table table-hover">
     <thead>
       <tr>
+        <th>
+          <input  class="form-check-input" type="checkbox" name="{{user.id}}" value="1" form="user-select" id="checkbox master" x-model="selectAll" x-ref="master" @change="
+          checked = !selectAll ? [] : Array.from(document.querySelectorAll('.user-checkbox')).map(x => x.value);"  >
+        </th>
         <th>ID</th>
         <th>Nome</th>
         <th>Cognome</th>
+        <th>Ruolo</th>
+        <th>Numero Voti</th>
         <th>Abilitato </th>
-        <th>Invia email</th>
-        <th>Azioni</th>
+        <th></th>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td>
+          <input class="form-control form-control-sm" type="text" placeholder="Nessun filtro">
+        </td>
+        <td>
+          <input class="form-control form-control-sm" type="text" placeholder="Nessun filtro">
+        </td>
+
+        <td>
+          <select class="form-select form-select-sm" aria-label="Default select example" name="level" id="level">
+            <option value=""> Tutti</option>
+            <option value="1" >Utente</option>
+            <option value="2" >Admin</option>
+          </select>
+        </td>
+        <td></td>
+
+        <td>
+          <select class="form-select form-select-sm" aria-label="Default select example" name="level" id="level">
+            <option value=""> Tutti</option>
+            <option value="1" >Abilitato</option>
+            <option value="2" >Disabilitato</option>
+          </select>
+        </td>
+        <td></td>
       </tr>
     </thead>
-    <tbody>
+    <tbody >
+
       {% for user in users %}
-      <tr>
+      <tr :class="{'table-active': checked.includes('{{user.id}}')}">
+        <td>
+            <input class="form-check-input user-checkbox" type="checkbox" name="user-checkbox" value="{{user.id}}" form="user-select" id="checkbox-{{user.id}}" @change="selectAll = false; $refs.master.indeterminate = checked.some(Boolean) ? true : false"  x-model="checked" >
+        </td>
         <td>{{user.id}}</td>
         <td>{{user.name}}</td>
 
         <td>{{user.surname}}</td>
+        <td>{% if user.level == 1 %} Utente {% else %} Admin {% endif %}</td>
+        <td>{{user.votes}} vot{% if user.votes == 1%}o{% else %}i{% endif %}</td>
         <td>
-          <div class="form-check form-switch">
-            <form id="form{{user.id}}" hx-post="{{"admin/users/activate" | url}}"
-              hx-trigger="change from:find input"
-              hx-target="#toast-body">
+          <form id="form{{user.id}}" hx-post="{{"admin/users/activate" | url}}"
+          hx-trigger="change from:find input"
+          hx-target="#toast-body">
+          <div class="form-switch">
               <input
                 class="form-check-input"
                 type="checkbox"
@@ -29,21 +89,20 @@
                 {% if user.active == 1%} checked {% endif %}
               >
               <input type="hidden" name="id" value="{{user.id}}">
-            </form>
           </div>
+        </form>
+
         </td>
 
-        <td>
-          <a hx-boost="true" hx-get="{{"admin/users/sendMail/" | append: user.id | url}}" href="{{"admin/users/sendMail/" | append: user.id | url}}" hx-swap="none" class="btn btn-success btn-sm"><i class="bi bi-envelope-at-fill me-2"></i><span>Invia email</span> </a>
-        </td>
+        <td class="text-end">
+          <a hx-boost="true" hx-get="{{"admin/users/sendMail/" | append: user.id | url}}" href="{{"admin/users/sendMail/" | append: user.id | url}}" hx-swap="none" class="btn btn-outline-success btn-sm me-2"><i class="bi bi-envelope-at-fill me-2"></i><span>Invia email</span> </a>
 
-        <td>
-          <a hx-boost="true" href="{{"admin/users/edit/" | append: user.id | url}}" class="btn btn-primary btn-sm"><i class="bi bi-pencil"></i></a>
+          <a hx-boost="true" href="{{"admin/users/edit/" | append: user.id | url}}" class="btn btn-outline-primary btn-sm"><i class="bi bi-pencil me-2"></i>Modifica</a>
           <a
-            class="btn btn-danger btn-sm"
+            class="btn btn-outline-danger btn-sm ms-5"
             hx-post="{{"admin/users/delete" | url}}"
             hx-vals='{"id": "{{user.id}}" }'
-            hx-target="closest table"><i class="bi bi-trash3"></i></a>
+            hx-target="closest table"><i class="bi bi-trash3 me-2"></i> Elimina </a>
 
         </td>
 
@@ -52,7 +111,7 @@
     </tbody>
   </table>
 
-
+</div>
   {% if is_update %}
   <div id="toast-body" hx-swap-oob="true" class="toast-body">{{message}}</div>
   {% endif %}

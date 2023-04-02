@@ -51,7 +51,7 @@
         </td>
 
         <td>
-          <a href="{{"admin/polls/results/" | append: poll.id | url}}" class="btn btn-outline-primary btn-sm">
+          <a href="{{"admin/polls/results" | append: poll.id | url}}" class="btn btn-outline-primary btn-sm">
             <i class="bi bi-graph-up-arrow"></i>
             <span class="ms-2">Risultati</span>
           </a>
@@ -64,7 +64,8 @@
             class="btn btn-danger btn-sm"
             hx-post="{{"admin/polls/delete" | url}}"
             hx-vals='{"id": "{{poll.id}}" }'
-            hx-target="closest table"><i class="bi bi-trash3"></i></a>
+            hx-target="closest table"
+            hx-confirm="Eliminare la votazione?"><i class="bi bi-trash3"></i></a>
 
         </td>
 
@@ -74,3 +75,6 @@
   </table>
 
 
+  {% if is_update %}
+  <div id="toast-body" hx-swap-oob="true" class="toast-body">{{message}}</div>
+  {% endif %}
