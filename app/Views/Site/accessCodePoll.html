@@ -9,7 +9,7 @@
         <!-- Use x-for loop to create 5 input fields -->
         <template x-for="(input, index) in inputs" :key="index">
           <div class="col-2">
-            <input type="text" class="  border {% if error_message %} border-danger {% else %} border-primary {% endif %} form-control form-control-lg fw-bold text-primary " maxlength="1"
+            <input type="text" inputmode="numeric" pattern="[0-9]*"  class="border {% if error_message %} border-danger {% else %} border-primary {% endif %} form-control form-control-lg fw-bold text-primary " maxlength="1"
                     style="width:3rem"
                    x-model="inputs[index]"
                    @keyup="handleKeyDown($event, {{poll.id}})"
