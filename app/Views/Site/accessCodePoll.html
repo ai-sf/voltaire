@@ -1,0 +1,88 @@
+
+<h4 hx-preserve class="mb-4">{{poll.title}}</h4>
+<form hx-post="{{"polls/" | append: poll.id | url }}" hx-target="closest .card-body" >
+  <input type="hidden" name="access_code">
+
+  <div class="row mt-4">
+    <div class="col-auto mx-auto">
+      <div class="row justify-content-center" x-data="{inputs: ['', '', '', '', '']}">
+        <!-- Use x-for loop to create 5 input fields -->
+        <template x-for="(input, index) in inputs" :key="index">
+          <div class="col-2">
+            <input type="text" class="  border {% if error_message %} border-danger {% else %} border-primary {% endif %} form-control form-control-lg fw-bold text-primary " maxlength="1"
+                    style="width:3rem"
+                   x-model="inputs[index]"
+                   @keyup="handleKeyDown($event, {{poll.id}})"
+                   x-bind:name="'otp_{{poll.id}}__' + index"
+                   x-bind:id="'otp_{{poll.id}}__' + index"
+                   >
+          </div>
+        </template>
+      </div>
+      </div>
+      </div>
+      {% if error_message %}
+      <div class="row mt-4">
+        <div class="col-auto mx-auto text-center text-danger">
+          Codice errato!
+        </div>
+      </div>
+      {% endif %}
+      <div class="row mt-4">
+        <div class="col-auto mx-auto">
+          <button type="submit" id="submit-{{poll.id}}" class="btn btn pt-1 pb-1 ps-3 pe-3 btn-primary">Avanti</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+
+<div hx-swap-oob="true" id="header{{poll.id}}" class="small fw-bold text-success mt-1 mb-1 text-end">{{votes}} vot{% if votes > 1%}i{%else%}o{% endif %}</div>
+<script>
+  // Define Alpine.js methods
+
+  function handleKeyDown(event, pollId){
+    var inputField = event.target;
+    var key = event.key;
+    var index = parseInt(inputField.id.slice(inputField.id.indexOf("__") + 2));
+    console.log(index);
+    switch (key) {
+      case "ArrowRight":
+        focusNextInput(inputField, pollId, index);
+        break;
+      case "ArrowLeft":
+        focusPreviousInput(inputField, pollId, index);
+        break;
+
+      case "Backspace":
+        deleteInputAndBack(inputField, pollId, index);
+        break;
+      default:
+        focusNextInput(inputField, pollId, index);
+        break;
+    }
+
+  }
+
+  function focusPreviousInput(inputField, pollId, index) {
+    if (index > 0) {
+      document.querySelector("#otp_"+pollId+"__"+(index-1)).focus();
+    }
+  }
+
+  function deleteInputAndBack(inputField, pollId, index){
+    inputField.value= "";
+    focusPreviousInput(inputField, pollId, index);
+  }
+
+  function focusNextInput(inputField, pollId, index) {
+    if (index < 4) {
+      document.querySelector("#otp_"+pollId+"__"+(index+1)).focus();
+    } else {
+      inputField.blur();
+      document.querySelector("#submit-"+ pollId).focus();
+    }
+  }
+</script>
