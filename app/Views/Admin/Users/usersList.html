@@ -43,7 +43,7 @@
           <th>Ruolo</th>
           <th>Numero Voti</th>
           <th>Abilitato </th>
-          <th class="w-25 fst-italic fw-normal text-end">{{num_users}} risultat{% if num_users == 1%}o{% else %}i{% endif %}</th>
+          <th class="w-25 fst-italic fw-normal text-end" id="results-number">{{num_users}} risultat{% if num_users == 1%}o{% else %}i{% endif %}</th>
         </tr>
         <tr hx-preserve id="serchRow">
           <form hx-post="{{"admin/users/search" | url }}" hx-target = "tbody" hx-trigger="keyup from:input delay:500ms, change from:select">

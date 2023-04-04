@@ -4,6 +4,11 @@
 {% extends "Templates/adminCentralCard" %}
 
 {% block content %}
+<div class="row mb-2">
+<div class="col-auto ms-auto">
 
+  <a href="{{"admin/polls/new" | url}}" class="ms-auto btn btn-outline-success py-1 px-3"><i class="bi bi-plus-lg me-2"></i><span>Nuova votazione</span> </a>
+</div>
+</div>
   {% include "Admin/Polls/pollsTable" %}
 {% endblock %}

@@ -50,6 +50,9 @@
       </tr>
       {% endif %}
 
-  {% if is_update %}
+  {% if message %}
   <div id="toast-body" hx-swap-oob="true" class="toast-body">{{message}}</div>
   {% endif %}
+{% if is_update %}
+  <th class="w-25 fst-italic fw-normal text-end" hx-swap-oob="true" id="results-number">{{num_users}} risultat{% if num_users == 1%}o{% else %}i{% endif %}</th>
+{% endif %}

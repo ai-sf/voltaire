@@ -224,11 +224,13 @@ class AdminController extends BaseController
         $poll = Poll::get($id);
         $votes = Vote::filter(poll: $poll)->count();
         $answers = PollAnswer::filter(poll: $poll);
+        $tot_users = User::filter(active: 1)->count();
 
         return $this->render("Admin/Polls/pollGraph", [
             "poll" => $poll,
             "votes" => $votes,
-            "answers" => $answers
+            "answers" => $answers,
+            "tot_users" => $tot_users
         ]);
     }
 
@@ -280,23 +282,27 @@ class AdminController extends BaseController
     {
 
         $user = $this->doUserSave(
-            isset($_POST["user-id"]) ? $_POST["user-id"] : null,
-            $_POST["email"],
-            $_POST["level"],
-            $_POST["name"],
-            $_POST["surname"],
-            isset($_POST["active"]) ? $_POST["active"] : 0,
-            $_POST["votes"]
+            id: isset($_POST["user-id"]) ? $_POST["user-id"] : null,
+            email: $_POST["email"],
+            level: $_POST["level"],
+            name: $_POST["name"],
+            surname: $_POST["surname"],
+            votes: intval($_POST["votes"]),
+            active: isset($_POST["active"]) ? $_POST["active"] : 0,
         );
 
+        $vars = [
+            "is_update" => true,
+            "message" => "Utente salvato correttamente"
+        ];
+
+        if(isset($_POST["user-id"])){
+            $vars["user"] = $user;
+        }
 
         return $this->render(
             "Admin/Users/userForm",
-            [
-                "user" => $user,
-                "is_update" => true,
-                "message" => "Utente salvato correttamente"
-            ],
+            $vars,
             ['HX-Trigger' => 'showToast']
         );
     }
@@ -429,19 +435,12 @@ class AdminController extends BaseController
         } else {
             $users = User::all(...$filters);
         }
-        return $this->render("Admin/Users/usersTable", ["users" => $users, "num_users" => $users->count()]);
+        return $this->render("Admin/Users/usersTable", ["is_update"=>true, "users" => $users, "num_users" => $users->count()]);
     }
 
     #[LoginRequired(2)]
     public function batchAction()
     {
-
-        $actionsMap = [
-            "activate" => "activateUser",
-            "deactivate" => "activateUser",
-            "delete" => "deleteUser"
-        ];
-
         foreach($_POST["user-checkbox"] as $id) {
             switch ($_POST["action"]) {
                 case 'activate':

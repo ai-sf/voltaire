@@ -6,15 +6,24 @@
 <div class="container">
 
   <h2 class="text-center mb-5">Votazioni disponibili</h2>
+  {% assign polls_size = polls | size %}
 {% for poll in polls %}
   {% include "Site/pollCard" %}
 {% endfor %}
-
-
+{% if polls_size == 0%}
+<div class="text-center fst-italic">Nessuna votazione</div>
+{% endif %}
 <h2 class="text-center mt-5 mb-5">Votazioni completate</h2>
 {% for poll in completed_polls%}
   {% include "Site/pollCard" %}
 {% endfor %}
+
+{% assign completed_size = completed_polls | size %}
+
+{% if completed_size == 0 %}
+<div class="text-center fst-italic">Nessuna votazione disponibile</div>
+{% endif %}
+
 </div>
 
 

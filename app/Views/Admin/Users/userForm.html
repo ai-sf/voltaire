@@ -1,5 +1,5 @@
 
-<form hx-post="{{"admin/users/save" | url}}" hx-swap="outerHTML" >
+<form hx-post="{{"admin/users/save" | url}}" hx-swap="outerHTML">
   {% if user %}
     <input type="hidden" name="user-id" value="{{user.id}}">
   {% endif %}
@@ -40,7 +40,7 @@
 
       <label for="level" class="col-auto col-form-label text-end">N. voti</label>
     <div class="col">
-      <input type="number" class="form-control" id="votes" name="votes" value="{{user.votes}}">
+      <input type="number" required class="form-control" id="votes" name="votes" value="{% if user.votes %}{{user.votes}}{% else %}1{% endif %}">
 
     </div>
     <div class="col"></div>
