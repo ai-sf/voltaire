@@ -2,5 +2,15 @@
 {% extends "Templates/base" %}
 
 {% block content %}
-{{message}}
+<div class="container">
+  <div class="row">
+    <div class="col col-12 col-lg-6 mx-auto">
+      <div class="alert alert-danger fw-bold  shadow d-flex align-items-center" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <span>{{message}}</span>
+        </div>
+    </div>
+  </div>
+
+</div>
 {% endblock %}

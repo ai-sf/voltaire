@@ -1,0 +1,11 @@
+
+<h4 hx-preserve class="mb-4">{{poll.title}}</h4>
+
+<div class="alert alert-success fw-bold d-flex align-items-center" role="alert">
+  <i class="bi bi-check-circle-fill me-2"></i>
+  <span>{{message}}</span>
+  </div>
+</div>
+
+<div hx-swap-oob="true" id="header{{poll.id}}" class="small fw-bold text-success mt-1 mb-1 text-end">{{votes}} vot{% if votes == 1%}o{%else%}i{% endif %}</div>
+

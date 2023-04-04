@@ -3,25 +3,19 @@
 
 {% block content %}
 
-
-{% for poll in polls %}
-{% assign poll_url = "polls/"  | append: poll.id | url  %}
 <div class="container">
-  <div class="row">
-      <div class="col-12 col-md-6 col-lg-5 mb-3 mx-auto">
-        <div class="card w-100 shadow-sm" hx-get="{{poll_url}}" hx-trigger="load" hx-then="" hx-target="find .card-body" hx-swap="innerHtml">
-          <div class="card-header align-items-center" >
-            <div id="header{{poll.id}}" class="small fw-bold text-success mt-1 mb-1 text-end"> ? voti</div>
-          </div>
-          <div class="card-body p-4"></div>
-            <div class="spinner-border text-primary mx-auto mt-4 mb-4 htmx-indicator" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
-      </div>
-  </div>
-</div>
+
+  <h2 class="text-center mb-5">Votazioni disponibili</h2>
+{% for poll in polls %}
+  {% include "Site/pollCard" %}
 {% endfor %}
+
+
+<h2 class="text-center mt-5 mb-5">Votazioni completate</h2>
+{% for poll in completed_polls%}
+  {% include "Site/pollCard" %}
+{% endfor %}
+</div>
 
 
 

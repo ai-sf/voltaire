@@ -51,20 +51,31 @@ class SiteController extends BaseController
     #[LoginRequired(level: 1)]
     public function index()
     {
-        $polls = Poll::filter(active: 1);
         $toVote = array();
+        $voted = array();
         $authenticator = new UserAuthenticator();
         $user = $authenticator->getLoggedUser();
 
-        foreach ($polls as $poll) {
-            $votes = Vote::filter(poll: $poll, user: $user)->count();
-            if ($votes < $user->votes) {
-                $toVote[] = [
-                    "id" => $poll->id
-                    ];
+        if($user->active) {
+            $polls = Poll::all();
+
+            foreach ($polls as $poll) {
+                $votes = Vote::filter(poll: $poll, user: $user)->count();
+                if (($votes < $user->votes) && ($poll->active)) {
+                    $toVote[] = [
+                        "id" => $poll->id
+                        ];
+                } else {
+                    if($votes >= $user->votes){
+                        $voted[] = ["id" => $poll->id];
+                    }
+                }
             }
+            return $this->render("Site/index", ["polls" => $toVote, "completed_polls" => $voted]);
+        } else {
+            return $this->render("Site/error", ["message" => "Non sei abilitato/a al voto"]);
         }
-        return $this->render("Site/index", ["polls" => $toVote]);
+
     }
 
 
@@ -72,23 +83,32 @@ class SiteController extends BaseController
     public function poll($id)
     {
         $poll = Poll::get($id);
+        $user = (new UserAuthenticator())->getLoggedUser();
+        $votes = Vote::filter(poll: $poll, user: $user)->count();
 
-        if(! $poll->active) {
-            return $this->render("Site/error", ["message" => "Votazione chiusa"]);
+        if((! $poll->active)){
+            if($user->votes >= $votes){
+                return $this->render("Site/completedPoll", ["votes" => 0, "poll" => $poll, "message" => "Ti mostro i risultati"]);
+            } else {
+                return $this->render("Site/error", ["message" => "Votazione chiusa"]);
+
+            }
         }
 
-        $user = (new UserAuthenticator())->getLoggedUser();
+        if ($votes >= $user->votes) {
+            if(! $poll->active){
+                return $this->render("Site/completedPoll", ["votes" => 0, "poll" => $poll, "message" => "Ti mostro i risultati"]);
+            } else {
+                return $this->render("Site/completedPoll", ["votes" => 0, "poll" => $poll, "message" => "Hai già votato!"]);
+            }
+        }
+
 
         if(isset($_POST["access_code"])) {
 
             unset($_POST["access_code"]);
             $access_code = implode($_POST);
             if($access_code === $poll->access_code) {
-                $votes = Vote::filter(poll: $poll, user: $user)->count();
-
-                if ($votes >= $user->votes) {
-                    return $this->render("Site/error", ["message" => "Hai già votato!"]);
-                }
 
                 $answers = PollAnswer::filter(poll: $poll);
                 return $this->render(
@@ -100,10 +120,10 @@ class SiteController extends BaseController
                     ]
                 );
             } else {
-                return $this->render("Site/accessCodePoll", ["poll" => $poll, "error_message" => "Codice errato"]);
+                return $this->render("Site/accessCodePoll", ["poll" => $poll, "error_message" => "Codice errato", "votes" => $user->votes - $votes]);
             }
         } else {
-            return $this->render("Site/accessCodePoll", ["poll" => $poll]);
+            return $this->render("Site/accessCodePoll", ["poll" => $poll, "votes" => $user->votes - $votes]);
         }
     }
 
@@ -130,11 +150,14 @@ class SiteController extends BaseController
                         $answer->votes = $answer->votes + 1;
                         $answer->save();
                         $vote->save();
+                        $votes = Vote::filter(poll: $poll, user: $user)->count();
+
                         if($votes + 1 < $user->votes) {
                             $answers = PollAnswer::filter(poll: $poll);
-                            return $this->render("Site/poll", ["poll" => $poll, "answers" => $answers]);
+                            return $this->render("Site/poll", ["poll" => $poll, "votes" => $user->votes - $votes, "answers" => $answers]);
                         } else {
-                            $message = "Grazie per aver votato";
+
+                            return $this->render("Site/completedPoll", ["message" => "Grazie per aver votato", "poll" => $poll]);
                         }
                     } else {
                         $message = "Sondaggio chiuso";

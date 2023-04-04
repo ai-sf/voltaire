@@ -2,8 +2,9 @@
     <thead>
       <tr>
         <th>ID</td>
-        <th>Nome</td>
-        <th>Data di creazione</td>
+        <th>Nome</th>
+          <th>Codice</th>
+        <th>Data di creazione</th>
         <th>Attivo</th>
         <th>Risultati</th>
         <th></th>
@@ -15,6 +16,7 @@
       <tr>
         <td>{{poll.id}}</td>
         <td>{{poll.title}}</td>
+        <td>{{poll.access_code}}</td>
         <td>{{poll.timestamp}}</td>
         <td>
           <div class="form-check form-switch">
@@ -58,7 +60,7 @@
         </td>
 
         <td>
-          <a hx-boost="true" href="{{"admin/polls/edit/" | append: poll.id | url}}" class="btn btn-primary btn-sm"><i class="bi bi-pencil"></i></a>
+          <a href="{{"admin/polls/edit/" | append: poll.id | url}}" class="btn btn-primary btn-sm"><i class="bi bi-pencil"></i></a>
           <a class="btn btn-secondary btn-sm"><i class="bi bi-easel"></i></a>
           <a
             class="btn btn-danger btn-sm"

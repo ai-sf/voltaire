@@ -112,10 +112,11 @@ class AdminController extends BaseController
         if (array_key_exists("poll-id", $_POST)) {
             $poll = Poll::get($_POST["poll-id"]);
             $poll->title = $_POST["question"];
+            $poll->access_code = $_POST["access_code"];
             $poll->save();
             unset($_POST["poll-id"]);
         } else {
-            $poll = Poll::new(title: $_POST["question"], description: "", access_code: "0000", active: 0);
+            $poll = Poll::new(title: $_POST["question"], description: "", access_code: $_POST["access_code"], active: 0);
             $poll->save();
         }
         unset($_POST["question"]);
