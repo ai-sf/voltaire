@@ -42,3 +42,11 @@ function focusNextInput(inputField, pollId, index) {
     document.querySelector("#submit-"+ pollId).focus();
   }
 }
+
+function toggleFantaCISF(memberID) {
+  memberCard = document.querySelector('#member_' + memberID + '_card');
+  memberCard.classList.toggle('bg-primary');
+  memberCard.classList.toggle('text-white');
+  memberCard.querySelector(".badge").classList.toggle('bg-primary');
+  memberCard.querySelector(".badge").classList.toggle('bg-light');
+}

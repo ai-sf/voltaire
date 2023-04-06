@@ -1,0 +1,86 @@
+{% assign title = "Lista votazioni" %}
+{% extends "Templates/base-footer" %}
+
+{% block content %}
+<style>
+  body{
+    margin-bottom: 78px;
+  }
+</style>
+<div class="container" id="fantaCISFcontainer" x-data="{checkMember: [], picciuli: {{user.fantacisf_budget}}}">
+  <form>
+
+<h1 class="text-center">FantaCISF</h1>
+<div class="row my-3">
+  <div class="col-12 col-lg-6 mx-auto">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <p class="fst-italic">
+          Ti consigliamo vivamente di leggere il Regolamento che ti è stato inviato via mail prima di compilare il seguente form.
+        </p>
+        <p>
+          Ogni giocatore ha a disposizione <b>65 picciuli </b>per acquistare 5 dei membri in gara, selezionabili tra membri di Esecutivo, Presidenti dei Comitati Locali e membri del Comitato Organizzatore di CISF.
+        </p>
+        <p>
+          È possibile iscrivere la squadra <b>entro mercoledì 12 aprile 2023 alle ore 15.00</b>.
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="row mt-4">
+  <div class="col col-auto mx-auto">
+    <a class="btn btn-success shadow-sm" href="{{"files/FantaCISF_regolamento.pdf" | url}}"><i class="bi bi-download me-2"></i>Leggi il regolamento</a>
+  </div>
+</div>
+<h2 class="text-center mt-5 mb-3"1>Comitato Esecutivo</h2>
+{% for member in EC %}
+{% include "FantaCISF/memberCard" %}
+{% endfor %}
+
+
+<h2 class="text-center mt-5 mb-3">Presidenti dei Comitati Locali</h2>
+
+{% for member in LC %}
+{% include "FantaCISF/memberCard" %}
+{% endfor %}
+
+
+<h2 class="text-center mt-5 mb-3">Comitato Organizzatore</h2>
+
+
+
+{% for member in OC %}
+{% include "FantaCISF/memberCard" %}
+{% endfor %}
+
+
+</form>
+
+
+
+<div id="#my-picciuli" class="position-fixed bottom-0 start-0 end-0 bg-primary py-3 px-2 shadow-lg">
+<div class="container text-white">
+ <div class="row align-items-center">
+  <div class="col col-auto">I miei picciuli</div>
+  <div class="col col-auto ms-auto fw-bold fs-3" style="color: #fcd303"><i class="bi bi-piggy-bank-fill me-1"></i> <span x-text="picciuli"></span> pc.</div>
+ </div>
+</div>
+
+</div>
+<div class="toast-container position-fixed" style="left: 0px; right:0px; width: 100vw; bottom: 80px;">
+  <div class="toast align-items-center mx-auto  text-bg-danger " id="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">
+        Hello, world! This is a toast message.
+      </div>
+      <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock %}

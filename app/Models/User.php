@@ -20,5 +20,6 @@ class User extends Model
     #[NumberField] protected $level;
     #[NumberField] protected $active;
     #[DateTimeField] protected $last_login;
+    #[NumberField] protected $fantacisf_budget;
 
 }

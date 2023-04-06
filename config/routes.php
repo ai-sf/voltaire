@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\AdminController;
+use App\Controllers\FantaCISFController;
 use App\Controllers\SiteController;
 
 return [
@@ -33,6 +34,10 @@ return [
   "admin/users/batchAction" => [AdminController::class, "batchAction"],
   "admin/users/search" => [AdminController::class, "userSearch"],
   "admin/users/batchUpload" => [AdminController::class, "userBatchUpload"],
-  "admin/loginEmail" => [AdminController::class, "loginEmailPreview"]
+  "admin/loginEmail" => [AdminController::class, "loginEmailPreview"],
+
+
+  "fantacisf" => [FantaCISFController::class, "index"],
+  "fantacisf/toggle/<int:id>" => [FantaCISFController::class, "toggle"]
 
 ];

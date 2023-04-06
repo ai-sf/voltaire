@@ -1,10 +1,3 @@
-<div class="sidenav-container fixed" id="sidenav" hx-swap="morph:innerHTML">
-  <div class="d-flex flex-column flex-shrink-0 p-3 h-100 shadow-lg bg-dark ">
-    <a href="{{ "admin" | url }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-      <span class="fs-4 text-primary me-3 ms-2 fw-bold"><i class="bi bi-check-circle"></i></span>
-      <div class="fs-4 fw-bold text-primary">Voltaire</div>
-    </a>
-    <hr>
     <ul class="nav nav-pills flex-column mb-auto" >
       {% for el in nav %}
       {% assign on_page = el.link | url%}
@@ -38,14 +31,14 @@
       <hr>
 
     </ul>
+<ul class="nav nav-pills flex-column">
+  <li class="nav-item xt-auto">
+    <a href="{{"logout" | url }}" class="nav-link text-white mb-1" aria-current="page">
+      <span class="nav-icon"><i class="bi bi-box-arrow-right"></i></span>
+      <span class="fw-bold">Logout</span>
+    </a>
+  </li>
+</ul>
 
-    <li class="nav-item xt-auto">
-      <a href="{{"logout" | url }}" class="nav-link text-white mb-1" aria-current="page">
-        <span class="nav-icon"><i class="bi bi-box-arrow-right"></i></span>
-        <span class="fw-bold">Logout</span>
-      </a>
-    </li>
 
 
-  </div>
-  </div>

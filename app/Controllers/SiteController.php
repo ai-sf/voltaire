@@ -15,6 +15,25 @@ use Lepton\Http\HttpResponse;
 class SiteController extends BaseController
 {
     public string $baseLink = "";
+    protected array $default_parameters = [
+        "nav" => [
+            [
+                "title" => "Votazioni",
+                "link" => "",
+                "icon" => "house-door-fill"
+            ],
+            [
+                "title" => "FantaCISF",
+                "link" => "fantacisf",
+                "icon" => "trophy-fill"
+            ]
+
+        ]
+    ];
+
+
+
+
     public function login()
     {
         if (isset($_POST["email"]) && isset($_POST["password"])) {

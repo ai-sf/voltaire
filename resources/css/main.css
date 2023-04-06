@@ -34,3 +34,18 @@ p{
   font-family: var(--bs-body-font-family)!important;
 }
 [x-cloak] { display: none !important; }
+
+
+.nav-icon{
+  display:inline-flex;
+  width:1.25em;
+}
+
+.subnav.small{
+  margin-left: 1.25em;
+}
+
+
+.member-card, .member-card .badge{
+  transition: background 0.3s ease;
+}

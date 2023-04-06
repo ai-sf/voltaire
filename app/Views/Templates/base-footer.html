@@ -1,25 +1,38 @@
 <!doctype html>
 <html>
   <head>
-    {% include "Templates/head", title: title %}
     <script defer src="{{"js/site.js" | url}} "></script>
+
+    {% include "Templates/head", title: title %}
   </head>
   <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow mb-5">
+    <nav class="navbar navbar-light bg-light shadow mb-5">
       <div class="container-fluid">
         <a class="navbar-brand mx-auto" href="#">
           <span class="fs-4 text-primary me-1 fw-bold"><i class="bi bi-check-circle"></i></span>
           <span class="fs-3 fw-bold">Voltaire</span>
         </a>
 
-        {% if logged_user.level > 1 %}
-        <a class="btn btn-outline-primary" href="{{"admin" | url}}" style="position:absolute; right: 10px">
-          <i class="bi bi-tools"></i>   <span class="ms-2 d-none d-lg-i">Pannello amministratore </span>
+        <a class="navbar-toggler" data-bs-toggle="offcanvas" href="#sidebar" style="position:absolute; right: 10px">
+          <span class="navbar-toggler-icon"></span>
         </a>
-        {% endif %}
       </div>
     </nav>
+
+    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
+      <div class="offcanvas-header mt-2">
+        <a href="{{ "admin" | url }}" class="d-flex align-items-center link-dark text-decoration-none">
+          <span class="fs-4 text-primary me-3 ms-2 fw-bold"><i class="bi bi-check-circle"></i></span>
+          <div class="fs-4 fw-bold text-primary">Voltaire</div>
+        </a>
+        <button type="button" class="btn-close btn-close-white me-2" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        {% include "Templates/sidenav"%}
+      </div>
+    </div>
+
     <main class="min-vh-100">
       {% block content %}
       Content
@@ -27,15 +40,6 @@
     </main>
 
 
-
-    <div class="position-fixed top-0 end-0 p-3">
-      <div id="toast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-          <div id="toast-body" class="toast-body"></div>
-          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-      </div>
-    </div>
 
   <footer class="bg-dark text-light py-3 mt-5">
     <div class="container text-center">
