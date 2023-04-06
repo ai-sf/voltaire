@@ -49,3 +49,8 @@ p{
 .member-card, .member-card .badge{
   transition: background 0.3s ease;
 }
+
+footer .container{
+  box-sizing: border-box;
+  margin-bottom: 78px;
+}
