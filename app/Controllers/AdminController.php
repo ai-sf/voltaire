@@ -20,12 +20,14 @@ class AdminController extends BaseController
             [
                 "title" => "Home",
                 "link" => "admin",
-                "icon" => "house-door-fill"
+                "icon" => "house-door-fill",
+                "min_level" => 2
             ],
             [
                 "title" => "Votazioni",
                 "link" => "admin/polls",
                 "icon" => "bar-chart-fill",
+                "min_level" => 3,
                 "subnav" => [
                     [
                         "title" => "Tutte le votazioni",
@@ -41,6 +43,7 @@ class AdminController extends BaseController
                 "title" => "Utenti",
                 "link" => "admin/users",
                 "icon" => "people-fill",
+                "min_level" => 3,
                 "subnav" => [
                     [
                         "title" => "Tutti gli utenti",
@@ -56,13 +59,14 @@ class AdminController extends BaseController
                 "title" => "Proiettore",
                 "link" => "admin/projector",
                 "icon" => "projector-fill",
+                "min_level" => 3,
                 "target" => "_blank"
             ]
 
         ]
     ];
 
-    #[LoginRequired(2)]
+    #[LoginRequired(3)]
     public function index()
     {
         $polls = Poll::all();
@@ -71,7 +75,7 @@ class AdminController extends BaseController
     }
 
 
-    #[LoginRequired(2)]
+    #[LoginRequired(3)]
     public function poll($id)
     {
         $poll = Poll::get($id);
@@ -85,7 +89,7 @@ class AdminController extends BaseController
     }
 
 
-    #[LoginRequired(2)]
+    #[LoginRequired(3)]
     public function newPoll()
     {
         $answers =  [
@@ -96,7 +100,7 @@ class AdminController extends BaseController
         return $this->render("Admin/Polls/newPoll", ["answers" => $answers]);
     }
 
-    #[LoginRequired(2)]
+    #[LoginRequired(3)]
     public function editPoll($id)
     {
         $poll = Poll::get($id);
@@ -105,7 +109,7 @@ class AdminController extends BaseController
     }
 
 
-    #[LoginRequired(2)]
+    #[LoginRequired(3)]
     public function savePoll()
     {
 
@@ -154,7 +158,7 @@ class AdminController extends BaseController
     }
 
 
-    #[LoginRequired(2)]
+    #[LoginRequired(3)]
     public function pollsList()
     {
         $polls = Poll::all()->order_by("timestamp DESC");
@@ -163,7 +167,7 @@ class AdminController extends BaseController
 
 
 
-    #[LoginRequired(2)]
+    #[LoginRequired(3)]
     public function activatePoll()
     {
         $poll = Poll::get(id: $_POST["id"]);
@@ -179,7 +183,7 @@ class AdminController extends BaseController
         );
     }
 
-    #[LoginRequired(2)]
+    #[LoginRequired(3)]
     public function showResults()
     {
         $poll = Poll::get(id: $_POST["id"]);
@@ -197,7 +201,7 @@ class AdminController extends BaseController
 
 
 
-    #[LoginRequired(2)]
+    #[LoginRequired(3)]
     public function deletePoll()
     {
         $toDelete = Poll::get(id: $_POST["id"]);
@@ -207,7 +211,7 @@ class AdminController extends BaseController
     }
 
 
-    #[LoginRequired(2)]
+    #[LoginRequired(3)]
     public function pollResults($id)
     {
         $poll = Poll::get($id);
@@ -218,7 +222,7 @@ class AdminController extends BaseController
     }
 
 
-    #[LoginRequired(2)]
+    #[LoginRequired(3)]
     public function pollGraph($id)
     {
         $poll = Poll::get($id);
@@ -242,7 +246,7 @@ class AdminController extends BaseController
 
     /* =================================== USERS ==================================== */
 
-    #[LoginRequired(2)]
+    #[LoginRequired(3)]
     public function usersList()
     {
         $users = User::all();
@@ -250,7 +254,7 @@ class AdminController extends BaseController
     }
 
 
-    #[LoginRequired(2)]
+    #[LoginRequired(3)]
     public function activateUser($id, $status=0)
     {
         $user = User::get(id: $id);
@@ -270,14 +274,14 @@ class AdminController extends BaseController
     }
 
 
-    #[LoginRequired(2)]
+    #[LoginRequired(3)]
     public function newUser()
     {
         return $this->render("Admin/Users/newUser");
     }
 
 
-    #[LoginRequired(2)]
+    #[LoginRequired(3)]
     public function saveUser()
     {
 
@@ -296,7 +300,7 @@ class AdminController extends BaseController
             "message" => "Utente salvato correttamente"
         ];
 
-        if(isset($_POST["user-id"])){
+        if(isset($_POST["user-id"])) {
             $vars["user"] = $user;
         }
 
@@ -333,7 +337,7 @@ class AdminController extends BaseController
     }
 
 
-    #[LoginRequired(2)]
+    #[LoginRequired(3)]
     public function userBatchUpload()
     {
 
@@ -367,7 +371,7 @@ class AdminController extends BaseController
     }
 
 
-    #[LoginRequired(2)]
+    #[LoginRequired(3)]
     public function sendMail(int $id)
     {
         $authenticator = new UserAuthenticator();
@@ -393,7 +397,7 @@ class AdminController extends BaseController
 
 
 
-    #[LoginRequired(2)]
+    #[LoginRequired(3)]
     public function deleteUser($id)
     {
         $toDelete = User::get(id: $id);
@@ -411,7 +415,7 @@ class AdminController extends BaseController
     }
 
 
-    #[LoginRequired(2)]
+    #[LoginRequired(3)]
     public function editUser($id)
     {
         $user = User::get($id);
@@ -419,7 +423,7 @@ class AdminController extends BaseController
     }
 
 
-    #[LoginRequired(2)]
+    #[LoginRequired(3)]
     public function userSearch()
     {
         $allowed = ["name", "surname", "level", "active"];
@@ -438,7 +442,7 @@ class AdminController extends BaseController
         return $this->render("Admin/Users/usersTable", ["is_update"=>true, "users" => $users, "num_users" => $users->count()]);
     }
 
-    #[LoginRequired(2)]
+    #[LoginRequired(3)]
     public function batchAction()
     {
         foreach($_POST["user-checkbox"] as $id) {

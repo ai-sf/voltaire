@@ -15,17 +15,27 @@ class FantaCISFController extends BaseController
 {
     public string $baseLink = "";
     protected array $default_parameters = [
-        "nav" => [
-            [
-                "title" => "Votazioni",
-                "link" => "",
-                "icon" => "house-door-fill"
-            ],
-            [
-                "title" => "FantaCISF",
-                "link" => "fantacisf",
-                "icon" => "trophy-fill"
-            ]
+            "nav" => [
+                [
+                    "title" => "Votazioni",
+                    "link" => "",
+                    "icon" => "house-door-fill",
+                    "min_level" => 1
+                ],
+                [
+                    "title" => "FantaCISF",
+                    "link" => "fantacisf",
+                    "icon" => "trophy-fill",
+                    "min_level" => 1
+                ],
+                [
+                    "title" => "Admin",
+                    "link" => "admin",
+                    "icon" => "tools",
+                    "min_level" => 2
+                ]
+
+
 
         ]
     ];

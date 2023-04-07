@@ -1,5 +1,6 @@
     <ul class="nav nav-pills flex-column mb-auto" >
       {% for el in nav %}
+      {% if el.min_level <= logged_user.level %}
       {% assign on_page = el.link | url%}
         <li class="nav-item">
           {% assign sublink = el.link | sublink: page %}
@@ -25,6 +26,7 @@
                   ">{{subel.title}}</a>
           </li>
           {% endfor %}
+        {% endif %}
         {% endif %}
       {% endfor %}
 

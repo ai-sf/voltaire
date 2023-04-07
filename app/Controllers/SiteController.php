@@ -20,12 +20,20 @@ class SiteController extends BaseController
             [
                 "title" => "Votazioni",
                 "link" => "",
-                "icon" => "house-door-fill"
+                "icon" => "house-door-fill",
+                "min_level" => 1
             ],
             [
                 "title" => "FantaCISF",
                 "link" => "fantacisf",
-                "icon" => "trophy-fill"
+                "icon" => "trophy-fill",
+                "min_level" => 1
+            ],
+            [
+                "title" => "Admin",
+                "link" => "admin",
+                "icon" => "tools",
+                "min_level" => 2
             ]
 
         ]
@@ -85,7 +93,7 @@ class SiteController extends BaseController
                         "id" => $poll->id
                         ];
                 } else {
-                    if($votes >= $user->votes){
+                    if($votes >= $user->votes) {
                         $voted[] = ["id" => $poll->id];
                     }
                 }
@@ -105,8 +113,8 @@ class SiteController extends BaseController
         $user = (new UserAuthenticator())->getLoggedUser();
         $votes = Vote::filter(poll: $poll, user: $user)->count();
 
-        if((! $poll->active)){
-            if($user->votes >= $votes){
+        if((! $poll->active)) {
+            if($user->votes >= $votes) {
                 return $this->render("Site/completedPoll", ["votes" => 0, "poll" => $poll, "message" => "Ti mostro i risultati"]);
             } else {
                 return $this->render("Site/error", ["message" => "Votazione chiusa"]);
@@ -115,7 +123,7 @@ class SiteController extends BaseController
         }
 
         if ($votes >= $user->votes) {
-            if(! $poll->active){
+            if(! $poll->active) {
                 return $this->render("Site/completedPoll", ["votes" => 0, "poll" => $poll, "message" => "Ti mostro i risultati"]);
             } else {
                 return $this->render("Site/completedPoll", ["votes" => 0, "poll" => $poll, "message" => "Hai già votato!"]);
