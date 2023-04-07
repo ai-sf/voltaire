@@ -36,13 +36,13 @@ class FantaCISFController extends BaseController
     public function index()
     {
 
-        $user = (new UserAuthenticator)->getLoggedUser();
+        $user = (new UserAuthenticator())->getLoggedUser();
         $membriEC = FantaCISFMember::filter(role: 1);
         $membriLC = FantaCISFMember::filter(role: 2);
         $membriOC = FantaCISFMember::filter(role: 3);
         $mymembers = FantaCISFTeam::filter(user: $user);
         $selected = array();
-        foreach($mymembers as $member){
+        foreach($mymembers as $member) {
             $selected[] = $member->teamMember->id;
         }
 
@@ -58,11 +58,12 @@ class FantaCISFController extends BaseController
 
 
     #[LoginRequired(1)]
-    function toggle($id){
-        $user = (new UserAuthenticator)->getLoggedUser();
+    public function toggle($id)
+    {
+        $user = (new UserAuthenticator())->getLoggedUser();
         $member = FantaCISFMember::get($id);
         $price = 0;
-        switch($member->role){
+        switch($member->role) {
             case 1:
                 $price = 20;
                 break;
@@ -76,23 +77,35 @@ class FantaCISFController extends BaseController
                 $price = 0;
         }
         $exists = FantaCISFTeam::filter(user: $user, teamMember: $member)->count();
-
-        if($exists){
+        $team_number = FantaCISFTeam::filter(user: $user)->count();
+        if($exists) {
             FantaCISFTeam::get(user: $user, teamMember: $member)->delete();
             echo "cancello";
             $user->fantacisf_budget += $price;
             $user->save();
         } else {
-            if($user->fantacisf_budget >= $price){
+            if(($user->fantacisf_budget >= $price) && ($team_number < 5)) {
                 $teamAssociation = FantaCISFTeam::new(user: $user, teamMember: $member);
                 $teamAssociation->save();
                 $user->fantacisf_budget -= $price;
                 $user->save();
-            } else exit;
+            } else {
+                exit;
+            }
 
         }
         return new HttpResponse(200);
 
 
+    }
+
+
+    #[LoginRequired(1)]
+    public function saveName()
+    {
+        $user = (new UserAuthenticator())->getLoggedUser();
+        $user->fantacisf_team = $_POST["team_name"];
+        $user->save();
+        return $this->render("FantaCISF/teamNameForm", ["show_toast" => true], headers: ["HX-Trigger" => "showToast"]);
     }
 }

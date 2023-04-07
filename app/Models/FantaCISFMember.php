@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use JetBrains\PhpStorm\Deprecated;
 use Lepton\Boson\Model;
 use Lepton\Boson\DataTypes\{CharField, NumberField, PrimaryKey};
 

@@ -6,14 +6,26 @@
   {% else %}
   {% assign picciuli = 6 %}
   {% endif %}
-  <div class="card-body" x-data="{picciuli_member : {{picciuli}}}"  @click="checkMember[{{member.id}}] = !checkMember[{{member.id}}]; picciuli = checkMember[{{member.id}}] ? picciuli - picciuli_member : picciuli + picciuli_member; if(picciuli < 0) {showToast('Non hai picciuli a sufficienza'); picciuli += picciuli_member; checkMember[{{member.id}}] = false}" hx-get="{{"fantacisf/toggle/" | append: member.id | url}}" hx-trigger="click" hx-swap="none">
+  <div class="card-body" x-data="{picciuli_member : {{picciuli}}}"
+  @click="
+  checkMember[{{member.id}}] = !checkMember[{{member.id}}];
+  picciuli = checkMember[{{member.id}}] ? picciuli - picciuli_member : picciuli + picciuli_member;
+  if(picciuli < 0) {
+    showToast('Non hai picciuli a sufficienza');
+    picciuli += picciuli_member;
+    checkMember[{{member.id}}] = false
+  }
+  if(checkMember.filter( x => x === true).length > 5){
+    showToast('Scegli al massimo 5 componenti');
+    picciuli += picciuli_member;
+    checkMember[{{member.id}}] = false;
+  }" hx-get="{{"fantacisf/toggle/" | append: member.id | url}}" hx-trigger="click" hx-swap="none">
     <div class="row position-relative align-items-center ">
       <div class="col col-auto" style="overflow:hidden;">
         <input type="hidden" name="{{member.id}}_check" @change="toggleFantaCISF({{member.id}})" x-model="checkMember[{{member.id}}]" x-init="{% if selected contains member.id %}checkMember[{{member.id}}] = true{% else %} checkMember[{{member.id}}] = false {% endif %}
         " >
-        <div style="margin:-25px;">
-          <img src="{{"img/fantaCISF/" | append: member.photo | url}}" style="width:110px;" class="border-radius-100 img-fluid" >
-        </div>
+
+          <img src="{{"img/fantaCISF/" | append: member.photo | url}}" style="width:100px;" class="rounded-circle img-fluid" >
       </div>
       <div class="col">
         <div class="fw-bold fs-3">

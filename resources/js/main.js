@@ -8,11 +8,9 @@ htmx.config.useTemplateFragments = true;
 
 
 function showToast(message) {
-  console.log(message);
-  const liveToast = document.querySelector('#toast');
+  const liveToast = document.querySelector('#errortoast');
   liveToast.querySelector(".toast-body").innerHTML = message;
   const toast = new bootstrap.Toast(liveToast);
-  console.log(toast);
   toast.show();
 }
 
