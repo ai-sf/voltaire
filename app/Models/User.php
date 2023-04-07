@@ -22,5 +22,6 @@ class User extends Model
     #[DateTimeField] protected $last_login;
     #[NumberField] protected $fantacisf_budget;
     #[CharField] protected $fantacisf_team;
+    #[NumberField] protected $online;
 
 }

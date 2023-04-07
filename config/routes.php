@@ -32,6 +32,8 @@ return [
   "admin/users/delete/<int:id>" => [AdminController::class, "deleteUser"],
   "admin/users/edit/<int:id>" =>  [AdminController::class, "editUser"],
   "admin/users/batchAction" => [AdminController::class, "batchAction"],
+  "admin/users/toggleOnline/<int:id>" => [AdminController::class, "toggleOnline"],
+  "admin/users/toggleOnline/<int:id>?online=<int:online>" => [AdminController::class, "toggleOnline"],
   "admin/users/search" => [AdminController::class, "userSearch"],
   "admin/users/batchUpload" => [AdminController::class, "userBatchUpload"],
   "admin/loginEmail" => [AdminController::class, "loginEmailPreview"],
@@ -39,6 +41,7 @@ return [
 
   "fantacisf" => [FantaCISFController::class, "index"],
   "fantacisf/toggle/<int:id>" => [FantaCISFController::class, "toggle"],
+
   "fantacisf/saveteamname" => [FantaCISFController::class, "saveName"]
 
 ];

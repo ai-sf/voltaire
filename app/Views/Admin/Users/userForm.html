@@ -45,7 +45,9 @@
 
     </div>
     <div class="col"></div>
-    <div class="col-auto form-check form-switch form-check-reverse me-3">
+    <div class="col-auto">
+
+    <div class="form-check form-switch form-check-reverse me-3">
       <label for="role" >Abilitato</label>
       <input
       class="form-check-input"
@@ -55,7 +57,20 @@
       value="1"
       {% if user.active == 1 %} checked {% endif %}
     >
+    </div>
+    <div class="form-check form-switch form-check-reverse me-3">
+      <label for="role" >Online</label>
+      <input
+      class="form-check-input"
+      type="checkbox"
+      name="online"
+      role="switch"
+      value="1"
+      {% if user.online == 1 %} checked {% endif %}
+    >
+    </div>
   </div>
+
   </div>
 
   <div class="row">

@@ -7,11 +7,11 @@
         <td>{{user.name}}</td>
 
         <td>{{user.surname}}</td>
-        <td>{% if user.level == 1 %} Utente {% elsif user.level == 2 %} Gestore FantaCISF {% else %} Admin {% endif %}</td>
+        <td class="text-center">{% if user.level == 1 %} Utente {% elsif user.level == 2 %} FantaCISF {% else %} Admin {% endif %}</td>
         <td>{{user.votes}} vot{% if user.votes == 1%}o{% else %}i{% endif %}</td>
         <td>
 
-          <div class="form-switch">
+          <div class="form-switch d-flex flex-row justify-content-center">
               <input
                 class="form-check-input"
                 type="checkbox"
@@ -22,15 +22,31 @@
                 hx-get="{{"admin/users/activate/" | append: user.id | url}}"
                 {% if user.active == 1%} checked {% endif %}
               >
+          </div>
+
+        </td>
+        <td>
+
+          <div class="form-switch d-flex flex-row justify-content-center">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="online"
+                role="switch"
+                value="1"
+                id="user-online-{{user.id}}"
+                hx-get="{{"admin/users/toggleOnline/" | append: user.id | url}}"
+                {% if user.online == 1%} checked {% endif %}
+              >
               <input type="hidden" name="id" value="{{user.id}}">
           </div>
 
         </td>
 
         <td class="text-end">
-          <a hx-boost="true" hx-get="{{"admin/users/sendMail/" | append: user.id | url}}" href="{{"admin/users/sendMail/" | append: user.id | url}}" hx-swap="none" class="btn btn-outline-success btn-sm me-2"><i class="bi bi-envelope-at-fill me-2"></i><span>Invia email</span> </a>
+          <a hx-get="{{"admin/users/sendMail/" | append: user.id | url}}" href="{{"admin/users/sendMail/" | append: user.id | url}}" hx-swap="none" class="btn btn-outline-success btn-sm me-1"><i class="bi bi-envelope-at-fill"></i> </a>
 
-          <a hx-boost="true" href="{{"admin/users/edit/" | append: user.id | url}}" class="btn btn-outline-primary btn-sm"><i class="bi bi-pencil me-2"></i>Modifica</a>
+          <a href="{{"admin/users/edit/" | append: user.id | url}}" class="btn btn-outline-primary btn-sm"><i class="bi bi-pencil"></i></a>
 
           <a
             class="btn btn-outline-danger btn-sm ms-4 {% if user.id == logged_user.id %} disabled {% endif %}"

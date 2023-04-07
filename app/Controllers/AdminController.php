@@ -273,6 +273,17 @@ class AdminController extends BaseController
         );
     }
 
+    #[LoginRequired(3)]
+    public function toggleOnline(int $id, $online = 0){
+        $user = User::get($id);
+        $user->online = $online;
+        $user->save();
+        return $this->render(    "Admin/toaster",
+        ["message" => "Salvato correttamente!"],
+        headers: ['HX-Trigger' => 'showToast']);
+    }
+
+
 
     #[LoginRequired(3)]
     public function newUser()
@@ -292,6 +303,7 @@ class AdminController extends BaseController
             name: $_POST["name"],
             surname: $_POST["surname"],
             votes: intval($_POST["votes"]),
+            online: isset($_POST["online"]) ? $_POST["online"] : 0,
             active: isset($_POST["active"]) ? $_POST["active"] : 0,
         );
 
@@ -311,8 +323,8 @@ class AdminController extends BaseController
         );
     }
 
-
-    private function doUserSave($id = null, $email, $level, $name, $surname, $votes, $active = null)
+    #[LoginRequired(3)]
+    private function doUserSave($id = null, $email, $level, $name, $surname, $votes, $online, $active = null)
     {
         $user = null;
         if (! is_null($id)) {
@@ -329,6 +341,7 @@ class AdminController extends BaseController
             $user->surname = $surname;
             $user->active = is_null($active) ? 0 : $active;
             $user->votes = $votes;
+            $user->online = $online;
             $user->save();
             return $user;
         } else {
@@ -353,6 +366,7 @@ class AdminController extends BaseController
                         level: intval($data[3]),
                         name: $data[0],
                         surname: $data[1],
+                        online: $data[5],
                         votes: intval($data[4])
                     )) {
                         $n++;

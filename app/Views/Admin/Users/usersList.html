@@ -40,10 +40,11 @@
           <th>ID</th>
           <th>Nome</th>
           <th>Cognome</th>
-          <th>Ruolo</th>
+          <th class="text-center">Ruolo</th>
           <th># Voti</th>
-          <th>Abilitato </th>
-          <th class="w-25 fst-italic fw-normal text-end" id="results-number">{{num_users}} risultat{% if num_users == 1%}o{% else %}i{% endif %}</th>
+          <th class="text-center">Abilitato </th>
+          <th class="text-center">Online</th>
+          <th class="fst-italic fw-normal text-end" id="results-number">{{num_users}} risultat{% if num_users == 1%}o{% else %}i{% endif %}</th>
         </tr>
         <tr hx-preserve id="serchRow">
           <form hx-post="{{"admin/users/search" | url }}" hx-target = "tbody" hx-trigger="keyup from:input delay:500ms, change from:select">
@@ -57,20 +58,27 @@
           </td>
 
           <td>
-            <select class="form-select form-select-sm" aria-label="Default select example" name="level" id="level">
+            <select class="form-select form-select-sm text-center" aria-label="Default select example" name="level" id="level">
               <option value=""> Tutti</option>
               <option value="1" >Utente</option>
-              <option value="2" >Gestore FantaCISF</option>
+              <option value="2" >FantaCISF</option>
               <option value="3" >Admin</option>
             </select>
           </td>
           <td></td>
 
           <td>
-            <select class="form-select form-select-sm" aria-label="Default select example" name="active" id="level">
+            <select class="form-select form-select-sm text-center" aria-label="Default select example" name="active" id="active">
               <option value=""> Tutti</option>
               <option value="1" >Abilitato</option>
               <option value="2" >Disabilitato</option>
+            </select>
+          </td>
+          <td>
+            <select class="form-select form-select-sm text-center" aria-label="Default select example" name="online" id="online">
+              <option value=""> Tutti</option>
+              <option value="0" >Presenza</option>
+              <option value="1" >Online</option>
             </select>
           </td>
           <td></td>
