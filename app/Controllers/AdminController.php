@@ -274,13 +274,16 @@ class AdminController extends BaseController
     }
 
     #[LoginRequired(3)]
-    public function toggleOnline(int $id, $online = 0){
+    public function toggleOnline(int $id, $online = 0)
+    {
         $user = User::get($id);
         $user->online = $online;
         $user->save();
-        return $this->render(    "Admin/toaster",
-        ["message" => "Salvato correttamente!"],
-        headers: ['HX-Trigger' => 'showToast']);
+        return $this->render(
+            "Admin/toaster",
+            ["message" => "Salvato correttamente!"],
+            headers: ['HX-Trigger' => 'showToast']
+        );
     }
 
 
@@ -471,6 +474,7 @@ class AdminController extends BaseController
                     $this->deleteUser($id);
                     break;
                 case 'sendmail':
+                    sleep(1);
                     $this->sendMail($id);
                     break;
                 default:
