@@ -1,4 +1,4 @@
-      {% for user in users %}
+{% for user in users %}
       <tr :class="{'table-active': checked.includes('{{user.id}}')}" id="tablerow-{{user.id}}">
         <td>
             <input class="form-check-input user-checkbox" type="checkbox" name="user-checkbox[]" value="{{user.id}}" form="user-select" id="checkbox-{{user.id}}" @change="selectAll = false; $refs.master.indeterminate = checked.some(Boolean) ? true : false"  x-model="checked" >
@@ -28,17 +28,7 @@
         <td>
 
           <div class="form-switch d-flex flex-row justify-content-center">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                name="online"
-                role="switch"
-                value="1"
-                id="user-online-{{user.id}}"
-                hx-get="{{"admin/users/toggleOnline/" | append: user.id | url}}"
-                {% if user.online == 1%} checked {% endif %}
-              >
-              <input type="hidden" name="id" value="{{user.id}}">
+                {% if user.online == 1%}Online{% else %}Presenza{% endif %}
           </div>
 
         </td>
@@ -59,16 +49,16 @@
       {% endfor %}
       {% if num_users == 0 %}
       <tr>
-        <td colspan="8">
+        <td colspan="9">
           <div class="text-center fst-italic">Nessun risultato</div>
 
         </td>
       </tr>
       {% endif %}
 
-  {% if message %}
-  <div id="toast-body" hx-swap-oob="true" class="toast-body">{{message}}</div>
-  {% endif %}
-{% if is_update %}
-  <th class="w-25 fst-italic fw-normal text-end" hx-swap-oob="true" id="results-number">{{num_users}} risultat{% if num_users == 1%}o{% else %}i{% endif %}</th>
-{% endif %}
+      {% if message %}
+      <div id="toast-body" hx-swap-oob="true" class="toast-body">{{message}}</div>
+      {% endif %}
+    {% if is_update %}
+      <th class="fst-italic fw-normal text-end" hx-swap-oob="true" id="results-number">{{num_users}} risultat{% if num_users == 1%}o{% else %}i{% endif %}</th>
+    {% endif %}

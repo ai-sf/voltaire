@@ -440,7 +440,7 @@ class AdminController extends BaseController
     #[LoginRequired(3)]
     public function userSearch()
     {
-        $allowed = ["name", "surname", "level", "active"];
+        $allowed = ["name", "surname", "level", "active", "online"];
         $filters = array();
 
         foreach($allowed as $filter) {
