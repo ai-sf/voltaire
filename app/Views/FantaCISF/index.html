@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<div class="container" id="fantaCISFcontainer" x-data="{checkMember: [], picciuli: {{user.fantacisf_budget}}}">
+<div class="container" id="fantaCISFcontainer" x-data="{checkMember: [], picciuli: {{logged_user.fantacisf_budget}}}">
 
 
 <h1 class="text-center">FantaCISF</h1>
@@ -32,81 +32,43 @@
     <a class="btn btn-success shadow-sm" href="{{"files/FantaCISF_regolamento.pdf" | url}}"><i class="bi bi-download me-2"></i>Leggi il regolamento</a>
   </div>
 </div>
-<div class="row my-5">
-  <div class="col-12 col-lg-6 mx-auto">
-    <div class="card shadow-sm">
-      <div class="card-header">
-        <h3 class="text-center">Il mio team</h3>
-      </div>
-      <div class="card-body">
-       <p>Scegli il nome per il tuo team</p>
-          {% include "FantaCISF/teamNameForm"%}
-      </div>
-    </div>
-  </div>
 
+
+{% include "FantaCISF/teamNameForm"%}
+
+<div id="myteam" hx-get="{{"fantacisf/myteam/0" | url}}" hx-trigger="load from:body">
+  {% include "FantaCISF/myteam" %}
 </div>
-
-
-
-<form>
-<h2 class="text-center mt-5 mb-3"1>Comitato Esecutivo</h2>
-{% for member in EC %}
-{% include "FantaCISF/memberCard" %}
-{% endfor %}
-
-
-<h2 class="text-center mt-5 mb-3">Presidenti dei Comitati Locali</h2>
-
-{% for member in LC %}
-{% include "FantaCISF/memberCard" %}
-{% endfor %}
-
-
-<h2 class="text-center mt-5 mb-3">Comitato Organizzatore</h2>
-
-
-
-{% for member in OC %}
-{% include "FantaCISF/memberCard" %}
-{% endfor %}
-
-
-</form>
-
 
 
 <div id="#my-picciuli" class="position-fixed bottom-0 start-0 end-0 bg-primary py-3 px-2 shadow-lg">
-<div class="container text-white">
- <div class="row align-items-center">
-  <div class="col text-end">I miei picciuli</div>
-  <div class="col col-auto ms-auto fw-bold fs-3" style="color: #fcd303"><i class="bi bi-piggy-bank-fill me-1"></i> <span x-text="picciuli"></span> pc.</div>
- </div>
-</div>
+  <div class="container text-white">
+   <div class="row align-items-center">
+    <div class="col text-end">I miei picciuli</div>
+    <div class="col col-auto ms-auto fw-bold fs-3" style="color: #fcd303"><i class="bi bi-piggy-bank-fill me-1"></i> <span x-text="picciuli"></span> pc.</div>
+   </div>
+  </div>
 
-</div>
-<div class="toast-container position-fixed" style="left: 0px; right:0px; width: 100vw; bottom: 80px;">
-  <div class="toast align-items-center mx-auto  text-bg-danger " id="errortoast" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="d-flex">
-      <div class="toast-body">
-Toast      </div>
-      <button type="button" class="btn-close btn-close-white  me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+  <div class="toast-container position-fixed" style="left: 0px; right:0px; width: 100vw; bottom: 80px;">
+    <div class="toast align-items-center mx-auto  text-bg-danger " id="errortoast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body">
+  Toast      </div>
+        <button type="button" class="btn-close btn-close-white  me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
     </div>
   </div>
-</div>
 
 
-<div class="toast-container position-fixed" style="left: 0px; right:0px; width: 100vw; bottom: 80px;">
-  <div class="toast align-items-center mx-auto  text-bg-success " id="toast" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="d-flex">
-      <div class="toast-body" id="toast_body">
-Toast      </div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+  <div class="toast-container position-fixed" style="left: 0px; right:0px; width: 100vw; bottom: 80px;">
+    <div class="toast align-items-center mx-auto  text-bg-success " id="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body" id="toast_body">
+  Toast      </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
     </div>
   </div>
-</div>
-
-
-
 
 {% endblock %}

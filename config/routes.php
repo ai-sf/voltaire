@@ -43,7 +43,7 @@ return [
   "fantacisf/toggle/<int:id>" => [FantaCISFController::class, "toggle"],
   "fantacisf/saveteamname" => [FantaCISFController::class, "saveName"],
   "fantacisf/league" => [FantaCISFController::class, "league"],
-  "fantacisf/userTeam/<int:id>" => [FantaCISFController::class, "userteam"]
+  "fantacisf/myteam/<int:update>" => [FantaCISFController::class, "showTeam"]
 
 
 ];

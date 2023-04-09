@@ -1,9 +1,22 @@
-<form hx-post="{{"fantacisf/saveteamname" | url}}">
-  <input maxlength="64" class="form-control form-control-lg" type="text" name="team_name" value="{% if logged_user.fantacisf_team %}{{logged_user.fantacisf_team}}{% else %}Team di {{logged_user.name}} {{logged_user.surname}}{% endif %}">
-  <div class="text-center">
-    <button type="submit" class="btn btn-success mt-3">Salva</button>
+<div class="row my-5" id="formName" hx-swap-oob="true">
+  <div class="col-12 col-lg-6 mx-auto">
+    <div class="card shadow-sm">
+      <div class="card-header">
+        <h3 class="text-center">Il mio team</h3>
+      </div>
+      <div class="card-body">
+       <p>Scegli il nome per il tuo team</p>
+       <form hx-post="{{"fantacisf/saveteamname" | url}}" hx-target="#myteam">
+        <input maxlength="64" class="form-control form-control-lg" type="text" name="team_name" value="{% if logged_user.fantacisf_team %}{{logged_user.fantacisf_team}}{% else %}Team di {{logged_user.name}} {{logged_user.surname}}{% endif %}">
+        <div class="text-center">
+          <button type="submit" class="btn btn-success mt-3">Salva</button>
+        </div>
+        </form>
+      </div>
+    </div>
   </div>
-</form>
+</div>
+
 
 {% if show_toast %}
 <div class="toast-body" hx-swap-oob="true" id="toast_body">

@@ -56,25 +56,7 @@ class FantaCISFController extends BaseController
     #[LoginRequired(level: 1)]
     public function index()
     {
-
-        $user = (new UserAuthenticator())->getLoggedUser();
-        $membriEC = FantaCISFMember::filter(role: 1);
-        $membriLC = FantaCISFMember::filter(role: 2);
-        $membriOC = FantaCISFMember::filter(role: 3);
-        $mymembers = FantaCISFTeam::filter(user: $user);
-        $selected = array();
-        foreach($mymembers as $member) {
-            $selected[] = $member->teamMember->id;
-        }
-
-        return $this->render("FantaCISF/index", [
-            "EC" => $membriEC,
-            "LC" => $membriLC,
-            "OC" => $membriOC,
-            "selected" => $selected,
-            "user" => $user
-        ]);
-
+        return $this->render("FantaCISF/index");
     }
 
 
@@ -127,9 +109,39 @@ class FantaCISFController extends BaseController
         $user = (new UserAuthenticator())->getLoggedUser();
         $user->fantacisf_team = $_POST["team_name"];
         $user->save();
-        return $this->render("FantaCISF/teamNameForm", ["show_toast" => true], headers: ["HX-Trigger" => "showToast"]);
+
+        return $this->showTeam(1);
     }
 
+
+
+    #[LoginRequired(1)]
+    public function showTeam($update){
+        $user = (new UserAuthenticator())->getLoggedUser();
+        $membriEC = FantaCISFMember::filter(role: 1);
+        $membriLC = FantaCISFMember::filter(role: 2);
+        $membriOC = FantaCISFMember::filter(role: 3);
+        $mymembers = FantaCISFTeam::filter(user: $user);
+        $selected = array();
+        foreach($mymembers as $member) {
+            $selected[] = $member->teamMember->id;
+        }
+
+        $data = [ "EC" => $membriEC,
+        "LC" => $membriLC,
+        "OC" => $membriOC,
+        "selected" => $selected,
+        "user" => $user];
+
+        $headers = array();
+
+        if($update == 1){
+            $data["show_toast"] = true;
+            $data["is_update"] = true;
+            $headers["HX-Trigger"] = "showToast";
+        }
+        return $this->render("FantaCISF/myteam", $data, headers: $headers);
+    }
 
 
     private function cmp($a, $b){

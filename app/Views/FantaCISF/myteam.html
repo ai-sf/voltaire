@@ -1,0 +1,36 @@
+
+{% if logged_user.fantacisf_team  != "" %}
+
+<form>
+<h2 class="text-center mt-5 mb-3"1>Comitato Esecutivo</h2>
+{% for member in EC %}
+{% include "FantaCISF/memberCard" %}
+{% endfor %}
+
+
+<h2 class="text-center mt-5 mb-3">Presidenti dei Comitati Locali</h2>
+
+{% for member in LC %}
+{% include "FantaCISF/memberCard" %}
+{% endfor %}
+
+
+<h2 class="text-center mt-5 mb-3">Comitato Organizzatore</h2>
+
+
+
+{% for member in OC %}
+{% include "FantaCISF/memberCard" %}
+{% endfor %}
+
+
+</form>
+
+
+
+{% endif %}
+
+
+{% if is_update %}
+  {% include "FantaCISF/teamNameForm"%}
+{% endif %}
