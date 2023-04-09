@@ -6,10 +6,15 @@
     <script src="{{"js/admin.js" | url }}"></script>
   </head>
   <body >
-
+    <div class="d-block d-lg-none">
+      {% include "Templates/mobile-navbar" %}
+    </div>
     <div class="container-fluid">
+
+
+
       <div class="sidenav-container fixed" id="sidenav" hx-swap="morph:innerHTML">
-        <div class="d-flex flex-column flex-shrink-0 p-3 h-100 shadow-lg bg-dark ">
+        <div class="d-none d-lg-flex flex-column flex-shrink-0 p-3 h-100 shadow-lg bg-dark ">
           <a href="{{ "admin" | url }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
             <span class="fs-4 text-primary me-3 ms-2 fw-bold"><i class="bi bi-check-circle"></i></span>
             <div class="fs-4 fw-bold text-primary">Voltaire</div>
@@ -19,14 +24,16 @@
     </div>
 
     </div>
-      {% if cardwidth %}
+
+
+    {% if cardwidth %}
       {% else %}
         {% assign cardwidth = "50" %}
       {% endif %}
 
-        <main role="main" class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4" id="main" >
+        <main role="main" class="ml-sm-auto col-lg-10 pt-3 px-lg-4" id="main" >
           <div class="row">
-            <div class="col-auto mx-auto container" style="max-width: {{cardwidth}}; min-width: {{cardwidth}}%;" id="central-card">
+            <div class="col-auto mx-auto container" style="min-width: 100%; max-width: 100%; @media (min-width: 992px) { max-width: {{cardwidth}}%; min-width: {{cardwidth}}%; }" id="central-card">
               <div class="card shadow-lg" >
                 <div class="card-header ">
                   <div class="row align-items-center">
@@ -53,7 +60,6 @@
 </main>
 
 
-    <a href="{{"logout" | url }}">Logout</a>
     {% include "Templates/toast" %}
 
   </body>

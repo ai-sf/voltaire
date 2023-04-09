@@ -6,15 +6,15 @@
 
 {% block content %}
 
-<div class="d-flex align-items-start">
+<div class="d-flex p-lg-3 flex-column flex-lg-row align-items-stretch">
 
-<div class="nav flex-column nav-pills me-3 border rounded" id="v-pills-tab">
+<div class="nav flex-column nav-pills me-lg-3 border rounded" id="v-pills-tab">
   {% for member in members %}
     <button class="nav-link" id="member-{{member.id}}-tab" data-bs-toggle="pill" data-bs-target="#home-tab-pane" type="button" role="tab" aria-selected="false" hx-get="{{"admin/fantacisf/bonusesMember/" | append: member.id | url}}" hx-target="#tab-content">{{member.name}}</button>
   {% endfor %}
 
 </div>
-<div class="tab-content ps-4" id="tab-content">
+<div class="tab-content ps-lg-4 mt-3 mt-lg-0" id="tab-content">
   <div class="tab-pane fade show active" id="member-tab-pane" role="tabpanel" tabindex="0">Seleziona un membro per iniziare</div>
 </div>
 </div>

@@ -7,10 +7,12 @@
   width: 240px;
 }
 
+
+@media (min-width: 992px) {
 main{
   margin-left: 260px;
 }
-
+}
 
 
 

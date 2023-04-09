@@ -7,7 +7,7 @@
 {% block content %}
 
 
-<div class="container" >
+<div class="container-lg" >
   <div>
     <div  x-data="{ checked: [], selectAll: false}">
 
@@ -29,8 +29,10 @@
         </div>
       </div>
 
+<div class="table-responsive-lg">
 
-    <table class="table table-hover">
+
+  <table class="table table-hover">
       <thead class="w-100">
         <tr>
           <th>
@@ -89,7 +91,7 @@
         {% include "Admin/Users/usersTable" %}
       </tbody>
 </table>
-
+</div>
 </div>
   </div>
 </div>

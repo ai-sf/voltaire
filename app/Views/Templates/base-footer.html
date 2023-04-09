@@ -7,31 +7,7 @@
   </head>
   <body>
 
-    <nav class="navbar navbar-light bg-light shadow mb-5">
-      <div class="container-fluid">
-        <a class="navbar-brand mx-auto" href="#">
-          <span class="fs-4 text-primary me-1 fw-bold"><i class="bi bi-check-circle"></i></span>
-          <span class="fs-3 fw-bold">Voltaire</span>
-        </a>
-
-        <a class="navbar-toggler" data-bs-toggle="offcanvas" href="#sidebar" style="position:absolute; right: 10px">
-          <span class="navbar-toggler-icon"></span>
-        </a>
-      </div>
-    </nav>
-
-    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
-      <div class="offcanvas-header mt-2">
-        <a href="{{ "admin" | url }}" class="d-flex align-items-center link-dark text-decoration-none">
-          <span class="fs-4 text-primary me-3 ms-2 fw-bold"><i class="bi bi-check-circle"></i></span>
-          <div class="fs-4 fw-bold text-primary">Voltaire</div>
-        </a>
-        <button type="button" class="btn-close btn-close-white me-2" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-        {% include "Templates/sidenav"%}
-      </div>
-    </div>
+   {% include "Templates/mobile-navbar" %}
 
     <main class="min-vh-100">
       {% block content %}
