@@ -144,7 +144,7 @@ class FantaCISFController extends BaseController
     }
 
 
-    private function cmp($a, $b){
+    public static function cmp($a, $b){
         return $a["points"] < $b["points"];
     }
 
@@ -163,14 +163,14 @@ class FantaCISFController extends BaseController
                 "team" => FantaCISFTeam::filter(user: $user)->do()
             ];
         }
-        usort($standings, array($this, "cmp"));
+        usort($standings, array(self::class, "cmp"));
         return $this->render("FantaCISF/league", ["users" => $standings,
         "num_teams" => $users->count()]);
     }
 
 
     #[LoginRequired(1)]
-    private function computePointsUser($user){
+    public function computePointsUser($user){
         $team = FantaCISFTeam::filter(user: $user);
         $points = 0;
         foreach($team as $member){
@@ -182,13 +182,14 @@ class FantaCISFController extends BaseController
 
 
     #[LoginRequired(1)]
-    private function computePointsMember($member){
+    public function computePointsMember($member){
         $memberbonus = FantaCISFPoints::filter(member: $member);
         $points = 0;
         foreach($memberbonus as $bonus){
-            $points += $bonus->bonus->points;
+            $points += $bonus->bonus->points*$bonus->multiplier;
         }
         return $points;
-
     }
+
+
 }

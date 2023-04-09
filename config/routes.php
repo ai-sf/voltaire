@@ -39,6 +39,13 @@ return [
   "admin/loginEmail" => [AdminController::class, "loginEmailPreview"],
 
 
+  "admin/fantacisf/teams" => [AdminController::class, "fantacisfTeams"],
+  "admin/fantacisf/bonuses" => [AdminController::class, "fantacisfBonuses"],
+  "admin/fantacisf/bonusesMember/<int:id>" => [AdminController::class, "fantacisfBonusesMember"],
+  "admin/fantacisf/setBonus/<int:member_id>/<int:bonus_id>" => [AdminController::class, "setBonus"],
+  "admin/fantacisf/removeBonus/<int:member_id>/<int:bonus_id>" => [AdminController::class, "removeBonus"],
+
+
   "fantacisf" => [FantaCISFController::class, "index"],
   "fantacisf/toggle/<int:id>" => [FantaCISFController::class, "toggle"],
   "fantacisf/saveteamname" => [FantaCISFController::class, "saveName"],

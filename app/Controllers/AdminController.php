@@ -7,7 +7,7 @@ use Lepton\Controller\BaseController;
 use Lepton\Boson\Model;
 use Liquid\{Liquid, Template};
 
-use App\Models\{User, Poll, PollAnswer, Vote};
+use App\Models\{FantaCISFBonus, FantaCISFMember, FantaCISFPoints, User, Poll, PollAnswer, Vote, FantaCISFTeam};
 use Lepton\Authenticator\LoginRequired;
 use Lepton\Authenticator\UserAuthenticator;
 use Lepton\Http\HttpResponse;
@@ -61,6 +61,22 @@ class AdminController extends BaseController
                 "icon" => "projector-fill",
                 "min_level" => 3,
                 "target" => "_blank"
+            ],
+            [
+                "title" => "FantaCISF",
+                "link" => "admin/fantacisf/teams",
+                "icon" => "trophy-fill",
+                "min_level" => 2,
+                "subnav" => [
+                    [
+                        "title" => "Squadre",
+                        "link" => "admin/fantacisf/teams"
+                    ],
+                    [
+                        "title" => "Assegna bonus",
+                        "link" => "admin/fantacisf/bonuses"
+                    ]
+                ]
             ]
 
         ]
@@ -487,8 +503,85 @@ class AdminController extends BaseController
             headers: ["HX-Trigger" => '{"showToast" : "", "reload-users": ""}']
         );
     }
-/*
-    public function loginEmailPreview(){
-        return $this->render("Admin/loginEmail", ["name" => "Roberto", "username" => "rrr@gmail.com", "password" => "culo"]);
-    }*/
+
+
+    #[LoginRequired(2)]
+    public function fantaCisfTeams(){
+        $users = User::filter(fantacisf_team__neq: "");
+        $standings = array();
+
+        foreach($users as $user){
+            $standings[] = [
+                "id" => $user->id,
+                "name" => $user->name." ".$user->surname,
+                "team_name" => $user->fantacisf_team,
+                "points" => (new FantaCISFController)->computePointsUser($user),
+                "team" => FantaCISFTeam::filter(user: $user)->do()
+            ];
+        }
+
+        usort($standings, array(FantaCISFController::class, "cmp"));
+        return $this->render("Admin/FantaCISF/league", ["users" => $standings,
+        "num_teams" => $users->count()]);
+    }
+
+    #[LoginRequired(2)]
+    public function fantacisfBonuses(){
+        $members = FantaCISFMember::all()->order_by("name");
+        return $this->render("Admin/FantaCISF/bonuses", ["members" => $members]);
+    }
+
+    #[LoginRequired(2)]
+    public function fantacisfBonusesMember($id){
+        $member = FantaCISFMember::get($id);
+        $bonuses = FantaCISFBonus::all()->order_by("id");
+        $memberBonuses = array();
+
+        foreach($bonuses as $bonus){
+            $counts = FantaCISFPoints::filter(member: $member, bonus: $bonus)->count();
+            $memberBonuses[] = [
+                "id" => $bonus->id,
+                "name" => $bonus->name,
+                "points" => $bonus->points,
+                "times" => $counts
+            ];
+        }
+
+        return $this->render("Admin/FantaCISF/memberBonuses", ["member" => $member, "bonuses" => $memberBonuses]);
+    }
+
+
+    #[LoginRequired(2)]
+    public function setBonus($member_id, $bonus_id){
+        $member = FantaCISFMember::get($member_id);
+        $bonus = FantaCISFBonus::get($bonus_id);
+        $points = FantaCISFPoints::new(member: $member, bonus: $bonus);
+        $points->save();
+
+        return $this->render(
+            "Admin/toaster",
+            ["message" => "Bonus assegnato correttamente"],
+            headers: ['HX-Trigger' => 'showToast']
+        );
+    }
+
+
+
+    #[LoginRequired(2)]
+    public function removeBonus($member_id, $bonus_id){
+        $member = FantaCISFMember::get($member_id);
+        $bonus = FantaCISFBonus::get($bonus_id);
+        $points = FantaCISFPoints::filter(member: $member, bonus: $bonus);
+        if($points->count() > 0){
+            $points->first()->delete();
+            return $this->render(
+                "Admin/toaster",
+                ["message" => "Bonus rimosso correttamente"],
+                headers: ['HX-Trigger' => 'showToast']
+            );
+        }
+        return new HttpResponse(200, body: "");
+
+    }
+
 }

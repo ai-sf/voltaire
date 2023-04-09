@@ -1,0 +1,26 @@
+<h3 class="mb-3">Bonus e malus di {{member.name}}</h3>
+<ul class="list-group">
+{% for bonus in bonuses %}
+<li class="list-group-item" x-data="{count: {{bonus.times}}}">
+  <div class="row">
+    <div class="ms-2 col me-auto">
+      {{bonus.name}}
+    </div>
+
+    <div class="col-auto">
+      <a class="btn btn-outline-danger btn-sm ms-5" hx-get="{{"admin/fantacisf/removeBonus/" | append: member.id | append: "/" | append: bonus.id | url}}" hx-swap="none" @click="count--">Rimuovi</a>
+
+      <a class="btn btn-outline-primary btn-sm me-5" hx-get="{{"admin/fantacisf/setBonus/" | append: member.id | append: "/" | append: bonus.id | url}}" hx-swap="none" @click="count++">Assegna</a>
+    </div>
+
+    <div class="col-auto">
+      <span class="badge {% if bonus.times > 0 %}bg-primary{% else %}bg-secondary {% endif %} rounded-pill fw-bold" x-text="count + ' x'"></span>
+    </div>
+
+  </div>
+
+
+</li>
+
+{% endfor %}
+</ul>

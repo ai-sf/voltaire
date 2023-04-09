@@ -3,19 +3,27 @@
   <head>
     {% include "Templates/head", title: title %}
     <link rel="stylesheet" href="{{"css/admin.css" | url}} ">
+    <script src="{{"js/admin.js" | url }}"></script>
   </head>
-  <body>
+  <body >
 
     <div class="container-fluid">
+      <div class="sidenav-container fixed" id="sidenav" hx-swap="morph:innerHTML">
+        <div class="d-flex flex-column flex-shrink-0 p-3 h-100 shadow-lg bg-dark ">
+          <a href="{{ "admin" | url }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+            <span class="fs-4 text-primary me-3 ms-2 fw-bold"><i class="bi bi-check-circle"></i></span>
+            <div class="fs-4 fw-bold text-primary">Voltaire</div>
+          </a>
+          <hr/>
       {% include "Templates/sidenav" %}
-
-        <main role="main" class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4">
-            {% block content %}
-              Content
-            {% endblock %}
-        </main>
-      </div>
     </div>
+
+    </div>
+
+        <main role="main" class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4" id="main" >
+
+                  {% block content %}
+                  {% endblock %}
 
 </main>
 
@@ -25,3 +33,5 @@
 
   </body>
 </html>
+
+

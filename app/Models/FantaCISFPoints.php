@@ -12,4 +12,5 @@ class FantaCISFPoints extends Model
     #[PrimaryKey] protected $id;
     #[ForeignKey(FantaCISFMember::class)] protected $member;
     #[ForeignKey(FantaCISFBonus::class)] protected $bonus;
+    #[NumberField] protected $multiplier;
 }
