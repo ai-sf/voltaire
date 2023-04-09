@@ -1,0 +1,50 @@
+{% assign title = "Lega FantaCISF" %}
+{% extends "Templates/base-footer" %}
+
+{% block content %}
+
+<div class="container mb-5">
+
+
+<h1 class="text-center">Squadre FantaCISF</h1>
+<div class="row my-3">
+  <div class="col-12 col-lg-6 mx-auto">
+
+  </div>
+
+</div>
+
+{% assign i = 0 %}
+{% for user in users %}
+{% assign i = i | plus: 1 %}
+<div class="row my-4">
+  <div class="col-12 col-lg-6 mx-auto">
+    <div class="card shadow-sm">
+      <div class="card-header">
+        <div class="row">
+          <div class="col">
+            <span class="fw-bold {% if i == 1 %}text-success {% elsif i == 2 %}text-warning{% elsif i == 3 %}text-info{% endif %}"></span>
+          </div>
+          <div class="col col-auto ms-auto">
+            <i class="bi bi-hypnotize me-2"></i>{{user.points}} pt.
+          </div>
+      </div>
+      </div>
+      <div class="card-body px-5 py-4">
+        <h3 class="text-primary mb-1">{{user.team_name}}</h3>
+        <p>{{user.name}}</p>
+        <div class="mt-4 mb-2">
+          {% for member in user.team %}
+          <img src="{{"img/fantaCISF/" | append: member.teamMember.photo | url }}" style="width: 40px; border-radius: 20px;">
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    </div>
+  </div>
+
+{% endfor %}
+
+</div>
+{% endblock %}

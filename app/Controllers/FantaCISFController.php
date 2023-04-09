@@ -7,7 +7,7 @@ use Lepton\Authenticator\UserAuthenticator;
 use Lepton\Controller\BaseController;
 use Liquid\{Liquid, Template};
 
-use App\Models\{User, FantaCISFMember, FantaCISFTeam};
+use App\Models\{User, FantaCISFMember, FantaCISFTeam, FantaCISFPoints};
 use Lepton\Authenticator\LoginRequired;
 use Lepton\Http\HttpResponse;
 
@@ -26,7 +26,18 @@ class FantaCISFController extends BaseController
                     "title" => "FantaCISF",
                     "link" => "fantacisf",
                     "icon" => "trophy-fill",
-                    "min_level" => 1
+                    "min_level" => 1,
+                    "subnav" => [
+                        [
+                            "title" => "La mia squadra",
+                            "link" => "fantacisf"
+                        ],
+                        [
+                            "title" => "Lega Fantacisf",
+                            "link" => "fantacisf/league"
+                        ]
+
+                    ]
                 ],
                 [
                     "title" => "Admin",
@@ -117,5 +128,54 @@ class FantaCISFController extends BaseController
         $user->fantacisf_team = $_POST["team_name"];
         $user->save();
         return $this->render("FantaCISF/teamNameForm", ["show_toast" => true], headers: ["HX-Trigger" => "showToast"]);
+    }
+
+
+
+    private function cmp($a, $b){
+        return $a["points"] < $b["points"];
+    }
+
+    #[LoginRequired(1)]
+    public function league()
+    {
+        $users = User::filter(fantacisf_team__neq: "");
+        $standings = array();
+
+        foreach($users as $user){
+            $standings[] = [
+                "id" => $user->id,
+                "name" => $user->name." ".$user->surname,
+                "team_name" => $user->fantacisf_team,
+                "points" => $this->computePointsUser($user),
+                "team" => FantaCISFTeam::filter(user: $user)->do()
+            ];
+        }
+        usort($standings, array($this, "cmp"));
+        return $this->render("FantaCISF/league", ["users" => $standings]);
+    }
+
+
+    #[LoginRequired(1)]
+    private function computePointsUser($user){
+        $team = FantaCISFTeam::filter(user: $user);
+        $points = 0;
+        foreach($team as $member){
+            $points += $this->computePointsMember($member->teamMember);
+        }
+        return $points;
+
+    }
+
+
+    #[LoginRequired(1)]
+    private function computePointsMember($member){
+        $memberbonus = FantaCISFPoints::filter(member: $member);
+        $points = 0;
+        foreach($memberbonus as $bonus){
+            $points += $bonus->bonus->points;
+        }
+        return $points;
+
     }
 }
