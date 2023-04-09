@@ -164,7 +164,8 @@ class FantaCISFController extends BaseController
             ];
         }
         usort($standings, array($this, "cmp"));
-        return $this->render("FantaCISF/league", ["users" => $standings]);
+        return $this->render("FantaCISF/league", ["users" => $standings,
+        "num_teams" => $users->count()]);
     }
 
 
