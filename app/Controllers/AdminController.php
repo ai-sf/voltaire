@@ -17,6 +17,7 @@ class AdminController extends BaseController
     public string $baseLink = "admin";
     protected array $default_parameters = [
         "nav" => [
+
             [
                 "title" => "Home",
                 "link" => "admin",
@@ -77,6 +78,12 @@ class AdminController extends BaseController
                         "link" => "admin/fantacisf/bonuses"
                     ]
                 ]
+            ],
+            [
+                "title" => "Frontend",
+                "link" => "",
+                "icon" => "arrow-left-square-fill",
+                "min_level" => 2
             ]
 
         ]
