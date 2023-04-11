@@ -249,20 +249,62 @@ class AdminController extends BaseController
     public function pollGraph($id)
     {
         $poll = Poll::get($id);
-        $votes = Vote::filter(poll: $poll)->count();
-        $answers = PollAnswer::filter(poll: $poll);
-        $tot_users = User::filter(active: 1)->count();
+        $pollInfo = $this->getPollInfo($poll);
+
 
         return $this->render("Admin/Polls/pollGraph", [
-            "poll" => $poll,
-            "votes" => $votes,
-            "answers" => $answers,
-            "tot_users" => $tot_users
+            "poll" => $poll, "infos" => $pollInfo,
         ]);
     }
 
 
+    #[LoginRequired(3)]
+    private function getPollInfo($poll){
+        $votes = Vote::filter(poll: $poll)->count();
+        $answers = PollAnswer::filter(poll: $poll);
+        $tot_users = User::filter(active: 1)->count();
 
+        return [
+                "votes" => $votes,
+                "answers" => $answers,
+                "tot_users" => $tot_users
+        ];
+    }
+
+
+
+    #[LoginRequired(3)]
+    public function projector(){
+        return $this->render("Admin/Polls/projector");
+    }
+
+    #[LoginRequired(3)]
+    public function getProjectorPolls(){
+        $polls = Poll::filter(project: 1);
+        $pollsInfos = array();
+        foreach($polls as $poll){
+            $pollInfo = $this->getPollInfo($poll);
+            $pollsInfos[] = ["poll" => $poll, ...$pollInfo];
+        }
+        return $this->render("Admin/Polls/projector-grid", ["total" => $polls->count(), "polls" => $pollsInfos]);
+    }
+
+
+
+    #[LoginRequired(3)]
+    public function toggleProject(){
+        $poll = Poll::get(id: $_POST["id"]);
+        $poll->project = array_key_exists("project", $_POST) ? 1 : 0;
+        $poll->save();
+
+        $text = $poll->show_results ? "aggiunto" : "rimosso";
+
+        return $this->render(
+            "Admin/toaster",
+            ["message" => "Votazione $text al proietore!"],
+            headers: ['HX-Trigger' => 'showToast']
+        );
+    }
 
 
 
@@ -590,5 +632,6 @@ class AdminController extends BaseController
         return new HttpResponse(200, body: "");
 
     }
+
 
 }

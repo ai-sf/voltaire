@@ -20,8 +20,12 @@ return [
   "admin/polls/activate" => [AdminController::class, "activatePoll"],
   "admin/polls/delete" => [AdminController::class, "deletePoll"],
   "admin/polls/showResults" => [AdminController::class, "showResults"],
+  "admin/polls/toggleProject" => [AdminController::class, "toggleProject"],
   "admin/polls/results/<int:id>" => [AdminController::class, "pollResults"],
   "admin/polls/graph/<int:id>" => [AdminController::class, "pollGraph"],
+
+  "admin/projector" => [AdminController::class, "projector"],
+  "admin/projector/getProjectorPolls" => [AdminController::class, "getProjectorPolls"],
 
   "admin/users" => [AdminController::class, "usersList"],
   "admin/users/new" => [AdminController::class, "newUser"],

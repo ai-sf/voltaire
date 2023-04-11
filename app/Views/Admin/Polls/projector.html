@@ -1,0 +1,17 @@
+{% assign title = "Proiettore (Admin)" %}
+{% assign cardtitle = "Proiettore" %}
+{% extends "Templates/blank" %}
+
+{% block content %}
+
+<div id="aventidiritto" class="position-absolute top-0 begin-0 mx-3 my-2" hx-swap-oob="true" hx-swap-oob="true"></div>
+<div class="col text-end position-absolute top-0 end-0 me-3 my-2">
+  <span class="badge blink rounded-pill text-bg-danger fs-5 fw-bold"><i class="bi bi-broadcast me-1"></i> LIVE</span>
+</div>
+
+<main class="d-flex flex-column justify-content-center" style="height: calc(100vh - 4rem - .81vw)">
+<div class="row gy-2 vw-100 m-0 py-2" hx-get="{{"admin/projector/getProjectorPolls/" | append: poll.id  | url}}" hx-trigger="load, every 2s" id="poll-container" >
+
+</div>
+</main>
+{% endblock %}

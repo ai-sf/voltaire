@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+  <head>
+    {% include "Templates/head", title: title %}
+    <script defer src="{{"js/site.js" | url}} "></script>
+  </head>
+  <body>
+
+    <nav class="navbar shadow navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand mx-auto" href="#">
+          <span class="fs-4 text-primary me-1 fw-bold"><i class="bi bi-check-circle"></i></span>
+          <span class="fs-3 fw-bold">Voltaire</span>
+        </a>
+      </div>
+    </nav>
+      {% block content %}
+      Content
+    {% endblock %}
+
+
+
+  </body>
+</html>

@@ -15,5 +15,6 @@ class Poll extends Model{
   #[CharField] protected $access_code;
   #[NumberField] protected $active;
   #[NumberField] protected $show_results;
+  #[NumberField] protected $project;
   #[DateTimeField] protected $timestamp;
 }

@@ -1,0 +1,51 @@
+{% assign tot_users = 0%}
+{% if total < 3 %}
+  {% assign col = "6" %}
+{% else %}
+  {% assign col = "4" %}
+{% endif %}
+
+{% for infos in polls %}
+<div class="col col-{{col}} mx-auto" id="poll-{{infos.poll.id}}">
+  {% assign tot_users = infos.tot_users %}
+<div class="card shadow h-100">
+  <div class="card-header"><h4>{{infos.poll.title}}</h4></div>
+  <div class="card-body d-flex flex-column">
+
+    {% if infos.poll.active == 1 %}
+    <div>
+      <div class="fs-3 text-center" style="letter-spacing: 1px;">CODICE</div>
+      <h1 style="font-size: 5rem;" class="text-center text-danger">{{infos.poll.access_code}}</h1>
+    </div>
+    {% endif %}
+
+      {% if infos.poll.show_results == 1 %}
+      <div class="flex-grow-1 d-flex flex-column justify-content-center px-4">
+
+      {% include "Admin/Polls/pollGraph" %}
+      </div>
+    {% endif %}
+  </div>
+  <div class="card-footer py-2">
+    <div class="row mt-auto">
+      {% assign quorum = infos.tot_users | divided_by: 2 | round: 0%}
+      <div class="col col-auto ms-auto small fw-bold">
+            Totale: {{infos.votes}} vot{% if infos.votes == 1%}o{% else %}i{% endif %}
+      </div>
+</div>
+
+
+  </div>
+</div>
+
+</div>
+{% endfor %}
+
+<div id="aventidiritto" class="position-absolute top-0 begin-0 mx-3 my-2" hx-swap-oob="true">
+  <div class="fw-bold text-primary">
+    Aventi diritto: {{tot_users}}
+  </div>
+  <div class="fw-bold">
+    Maggioranza: {{quorum}} vot{% if quorum == 1%}o{% else %}i{% endif %}
+  </div>
+</div>

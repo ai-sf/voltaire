@@ -59,12 +59,22 @@
             <span class="ms-2">Risultati</span>
           </a>
         </td>
-
         <td>
-          <a href="{{"admin/polls/edit/" | append: poll.id | url}}" class="btn btn-primary btn-sm"><i class="bi bi-pencil"></i></a>
-          <a class="btn btn-secondary btn-sm"><i class="bi bi-easel"></i></a>
+          <form id="form-project-{{poll.id}}"
+            hx-post="{{"admin/polls/toggleProject" | url}}"
+            hx-trigger="change from:find input"
+            hx-target="#toast-body">
+            <input type="checkbox" class="btn-check" name="project" id="project-{{poll.id}}" autocomplete="off"
+              {% if poll.project == 1 %} checked {% endif %} >
+            <label class="btn btn-sm btn-outline-info" for="project-{{poll.id}}"><i class="bi bi-projector-fill me-2"></i>Proietta</label><br>
+            <input type="hidden" name="id" value="{{poll.id}}">
+          </form>
+
+        </td>
+        <td>
+          <a href="{{"admin/polls/edit/" | append: poll.id | url}}" class="btn btn-outline-primary btn-sm me-3"><i class="bi bi-pencil"></i></a>
           <a
-            class="btn btn-danger btn-sm"
+            class="btn btn-outline-danger btn-sm"
             hx-post="{{"admin/polls/delete" | url}}"
             hx-vals='{"id": "{{poll.id}}" }'
             hx-target="closest table"
