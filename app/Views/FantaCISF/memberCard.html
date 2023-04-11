@@ -1,4 +1,4 @@
-<div class="card member-card my-2 shadow-sm" id="member_{{member.id}}_card" :class="checkMember[{{member.id}}] ? 'bg-primary text-white' : 'bg-white'"  style="cursor:pointer;" >
+<div class="card member-card my-2 shadow-sm" id="member_{{member.id}}_card" :class="checkMember[{{member.id}}] ? 'bg-primary text-white' : 'bg-white'"  {% if can_edit == 1 %}style="cursor:pointer;"  {% endif %}>
   {% if member.role == 1 %}
     {% assign picciuli = 20 %}
   {% elsif member.role == 2 %}
@@ -6,7 +6,7 @@
   {% else %}
   {% assign picciuli = 6 %}
   {% endif %}
-  <div class="card-body" x-data="{picciuli_member : {{picciuli}}}"
+  <div class="card-body" x-data="{picciuli_member : {{picciuli}}}" {% if can_edit == 1 %}
   @click="
   checkMember[{{member.id}}] = !checkMember[{{member.id}}];
   picciuli = checkMember[{{member.id}}] ? picciuli - picciuli_member : picciuli + picciuli_member;
@@ -19,10 +19,10 @@
     showToast('Scegli al massimo 5 componenti');
     picciuli += picciuli_member;
     checkMember[{{member.id}}] = false;
-  }" hx-get="{{"fantacisf/toggle/" | append: member.id | url}}" hx-trigger="click" hx-swap="none">
+  }" hx-get="{{"fantacisf/toggle/" | append: member.id | url}}" hx-trigger="click" hx-swap="none" {% endif %}>
     <div class="row position-relative align-items-center ">
       <div class="col col-auto" style="overflow:hidden;">
-        <input type="hidden" name="{{member.id}}_check" @change="toggleFantaCISF({{member.id}})" x-model="checkMember[{{member.id}}]" x-init="{% if selected contains member.id %}checkMember[{{member.id}}] = true{% else %} checkMember[{{member.id}}] = false {% endif %}
+        <input type="hidden" name="{{member.id}}_check" {% if can_edit == 1 %} @change="toggleFantaCISF({{member.id}})" {% endif %}x-model="checkMember[{{member.id}}]" x-init="{% if selected contains member.id %}checkMember[{{member.id}}] = true{% else %} checkMember[{{member.id}}] = false {% endif %}
         " >
 
           <img src="{{"img/fantaCISF/" | append: member.photo | url}}" style="width:100px;" class="rounded-circle img-fluid" >

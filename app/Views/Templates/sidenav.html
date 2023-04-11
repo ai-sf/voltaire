@@ -6,7 +6,7 @@
           {% assign sublink = el.link | sublink: page %}
           <a
             href="{{el.link | url }}"
-            class="nav-link text-white mb-1
+            class="nav-link text-white mb-1 mt-3 mt-lg-2
               {% if sublink %} active mb-2 {% endif %}
             "
             aria-current="page"
@@ -16,17 +16,15 @@
             <span   {% if page == on_page %} class="fw-bold" {% endif %}>{{el.title}}</span>
           </a>
         </li>
-        {% if sublink %}
           {% for subel in el.subnav %}
           {% assign on_page = subel.link | url%}
           <li class="nav-item small subnav">
             <a href="{{on_page}}"
-                  class=" nav-link py-0 text-white mb-1
+                  class=" nav-link py-1 py-lg-0 text-white mb-1
                     {% if page == on_page %} fw-bold {% endif %}
                   ">{{subel.title}}</a>
           </li>
           {% endfor %}
-        {% endif %}
         {% endif %}
       {% endfor %}
 

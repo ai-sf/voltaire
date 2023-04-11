@@ -5,6 +5,7 @@
         <h3 class="text-center">Il mio team</h3>
       </div>
       <div class="card-body">
+        {% if can_edit == 1 %}
        <p>Scegli il nome per il tuo team</p>
        <form hx-post="{{"fantacisf/saveteamname" | url}}" hx-target="#myteam">
         <input maxlength="64" class="form-control form-control-lg" type="text" name="team_name" value="{% if logged_user.fantacisf_team %}{{logged_user.fantacisf_team}}{% else %}Team di {{logged_user.name}} {{logged_user.surname}}{% endif %}">
@@ -12,6 +13,13 @@
           <button type="submit" class="btn btn-success mt-3">Salva</button>
         </div>
         </form>
+        {% else %}
+          {% if logged_user.fantacisf_team != "" %}
+            <h3 class="text-primary text-center">{{logged_user.fantacisf_team}}</h3>
+          {% else %}
+            <p>Non partecipi al FantaCISF </p>
+          {% endif %}
+        {% endif %}
       </div>
     </div>
   </div>

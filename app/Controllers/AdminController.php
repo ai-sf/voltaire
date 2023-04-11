@@ -7,7 +7,7 @@ use Lepton\Controller\BaseController;
 use Lepton\Boson\Model;
 use Liquid\{Liquid, Template};
 
-use App\Models\{FantaCISFBonus, FantaCISFMember, FantaCISFPoints, User, Poll, PollAnswer, Vote, FantaCISFTeam};
+use App\Models\{FantaCISFBonus,FantaCISFSettings, FantaCISFMember, FantaCISFPoints, User, Poll, PollAnswer, Vote, FantaCISFTeam};
 use Lepton\Authenticator\LoginRequired;
 use Lepton\Authenticator\UserAuthenticator;
 use Lepton\Http\HttpResponse;
@@ -259,7 +259,8 @@ class AdminController extends BaseController
 
 
     #[LoginRequired(3)]
-    private function getPollInfo($poll){
+    private function getPollInfo($poll)
+    {
         $votes = Vote::filter(poll: $poll)->count();
         $answers = PollAnswer::filter(poll: $poll);
         $tot_users = User::filter(active: 1)->count();
@@ -274,15 +275,17 @@ class AdminController extends BaseController
 
 
     #[LoginRequired(3)]
-    public function projector(){
+    public function projector()
+    {
         return $this->render("Admin/Polls/projector");
     }
 
     #[LoginRequired(3)]
-    public function getProjectorPolls(){
+    public function getProjectorPolls()
+    {
         $polls = Poll::filter(project: 1);
         $pollsInfos = array();
-        foreach($polls as $poll){
+        foreach($polls as $poll) {
             $pollInfo = $this->getPollInfo($poll);
             $pollsInfos[] = ["poll" => $poll, ...$pollInfo];
         }
@@ -292,7 +295,8 @@ class AdminController extends BaseController
 
 
     #[LoginRequired(3)]
-    public function toggleProject(){
+    public function toggleProject()
+    {
         $poll = Poll::get(id: $_POST["id"]);
         $poll->project = array_key_exists("project", $_POST) ? 1 : 0;
         $poll->save();
@@ -555,38 +559,41 @@ class AdminController extends BaseController
 
 
     #[LoginRequired(2)]
-    public function fantaCisfTeams(){
+    public function fantaCisfTeams()
+    {
         $users = User::filter(fantacisf_team__neq: "");
         $standings = array();
-
-        foreach($users as $user){
+        $settings = FantaCISFSettings::get(name:"has_started");
+        foreach($users as $user) {
             $standings[] = [
                 "id" => $user->id,
                 "name" => $user->name." ".$user->surname,
                 "team_name" => $user->fantacisf_team,
-                "points" => (new FantaCISFController)->computePointsUser($user),
+                "points" => (new FantaCISFController())->computePointsUser($user),
                 "team" => FantaCISFTeam::filter(user: $user)->do()
             ];
         }
 
         usort($standings, array(FantaCISFController::class, "cmp"));
-        return $this->render("Admin/FantaCISF/league", ["users" => $standings,
+        return $this->render("Admin/FantaCISF/league", ["has_started" => $settings->value, "users" => $standings,
         "num_teams" => $users->count()]);
     }
 
     #[LoginRequired(2)]
-    public function fantacisfBonuses(){
+    public function fantacisfBonuses()
+    {
         $members = FantaCISFMember::all()->order_by("name");
         return $this->render("Admin/FantaCISF/bonuses", ["members" => $members]);
     }
 
     #[LoginRequired(2)]
-    public function fantacisfBonusesMember($id){
+    public function fantacisfBonusesMember($id)
+    {
         $member = FantaCISFMember::get($id);
         $bonuses = FantaCISFBonus::all()->order_by("id");
         $memberBonuses = array();
 
-        foreach($bonuses as $bonus){
+        foreach($bonuses as $bonus) {
             $counts = FantaCISFPoints::filter(member: $member, bonus: $bonus)->count();
             $memberBonuses[] = [
                 "id" => $bonus->id,
@@ -601,7 +608,8 @@ class AdminController extends BaseController
 
 
     #[LoginRequired(2)]
-    public function setBonus($member_id, $bonus_id){
+    public function setBonus($member_id, $bonus_id)
+    {
         $member = FantaCISFMember::get($member_id);
         $bonus = FantaCISFBonus::get($bonus_id);
         $points = FantaCISFPoints::new(member: $member, bonus: $bonus);
@@ -617,11 +625,12 @@ class AdminController extends BaseController
 
 
     #[LoginRequired(2)]
-    public function removeBonus($member_id, $bonus_id){
+    public function removeBonus($member_id, $bonus_id)
+    {
         $member = FantaCISFMember::get($member_id);
         $bonus = FantaCISFBonus::get($bonus_id);
         $points = FantaCISFPoints::filter(member: $member, bonus: $bonus);
-        if($points->count() > 0){
+        if($points->count() > 0) {
             $points->first()->delete();
             return $this->render(
                 "Admin/toaster",
@@ -632,6 +641,28 @@ class AdminController extends BaseController
         return new HttpResponse(200, body: "");
 
     }
+
+
+
+
+
+    #[LoginRequired(3)]
+    public function startGame()
+    {
+        $setting = FantaCISFSettings::get(name: "has_started");
+        $setting->value = array_key_exists("has_started", $_POST) ? 1 : 0;
+        $setting->save();
+
+        $text = $setting->value ? "aperta" : "chiusa";
+
+        return $this->render(
+            "Admin/toaster",
+            ["message" => "Gara $text!"],
+            headers: ['HX-Trigger' => 'showToast']
+        );
+    }
+
+
 
 
 }

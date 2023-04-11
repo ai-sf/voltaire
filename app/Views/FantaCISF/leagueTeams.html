@@ -11,16 +11,17 @@
 
   </div>
 
-  {% assign i = 0 %}
+
   {% for user in users %}
-  {% assign i = i | plus: 1 %}
   <div class="row my-4">
     <div class="col-12 col-lg-6 mx-auto">
       <div class="card shadow-sm">
         <div class="card-header">
           <div class="row">
             <div class="col">
-              <span class="fw-bold {% if i == 1 %}text-success {% elsif i == 2 %}text-warning{% elsif i == 3 %}text-info{% endif %}"></span>
+              {% if has_started %}
+              <span class="fw-bold {% if user.position == 1 %}text-success {% elsif user.position == 2 %}text-warning{% elsif user.position == 3 %}text-info{% endif %}">{{user.position}}°</span>
+              {% endif %}
             </div>
             <div class="col col-auto ms-auto">
               <i class="bi bi-hypnotize me-2"></i>{{user.points}} pt.
