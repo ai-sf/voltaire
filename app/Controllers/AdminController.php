@@ -89,12 +89,12 @@ class AdminController extends BaseController
         ]
     ];
 
-    #[LoginRequired(3)]
+    #[LoginRequired(2)]
     public function index()
     {
         $polls = Poll::all();
 
-        return $this->render("Admin/index", ["polls" => $polls]);
+        return $this->render("Admin/index");
     }
 
 
