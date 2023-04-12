@@ -7,7 +7,7 @@ use Lepton\Authenticator\UserAuthenticator;
 use Lepton\Controller\BaseController;
 use Liquid\{Liquid, Template};
 
-use App\Models\{User, FantaCISFMember, FantaCISFTeam, FantaCISFPoints, FantaCISFSettings};
+use App\Models\{User, FantaCISFMember, FantaCISFBonus, FantaCISFTeam, FantaCISFPoints, FantaCISFSettings};
 use Lepton\Authenticator\LoginRequired;
 use Lepton\Http\HttpResponse;
 
@@ -19,7 +19,7 @@ class FantaCISFController extends BaseController
                 [
                     "title" => "Votazioni",
                     "link" => "",
-                    "icon" => "house-door-fill",
+                    "icon" => "bar-chart-line-fill",
                     "min_level" => 1
                 ],
                 [
@@ -35,6 +35,10 @@ class FantaCISFController extends BaseController
                         [
                             "title" => "Lega Fantacisf",
                             "link" => "fantacisf/league"
+                        ],
+                        [
+                            "title" => "Bonus e malus",
+                            "link" => "fantacisf/bonusmalus"
                         ]
 
                     ]
@@ -186,10 +190,10 @@ class FantaCISFController extends BaseController
 
         usort($standings, array(self::class, "cmp"));
 
-        foreach($standings as $key => &$standing){
-            if($key == 0 ){
+        foreach($standings as $key => &$standing) {
+            if($key == 0) {
                 $standing["position"] = 1;
-            } else if($last_points > $standing["points"]){
+            } elseif($last_points > $standing["points"]) {
                 $standing["position"] = $last_position + 1;
             } else {
                 $standing["position"] = $last_position;
@@ -230,5 +234,49 @@ class FantaCISFController extends BaseController
         return $points;
     }
 
+    #[LoginRequired(1)]
+    public function bonusMalus()
+    {
+        $members = FantaCISFMember::all()->order_by("name");
+        $members_array = array();
+        foreach($members as $member) {
+            $bonuses = FantaCISFPoints::filter(member: $member);
+            $points = 0;
+            foreach($bonuses as $bonus) {
+                $points += $bonus->bonus->points;
+            }
+            $members_array[] = [
+                    "id" => $member->id,
+                    "name" => $member->name,
+                    "photo" => $member->photo,
+                    "description" => $member->description,
+                    "points" => $points
+                ];
+        }
+        usort($members_array, array(self::class, "cmp"));
+        return $this->render("FantaCISF/bonusMalus", ["members" => $members_array]);
+    }
+
+    #[LoginRequired(1)]
+    public function fantacisfBonusesMember($id)
+    {
+        $member = FantaCISFMember::get($id);
+        $bonuses = FantaCISFBonus::all()->order_by("id");
+        $memberBonuses = array();
+
+        foreach($bonuses as $bonus) {
+            $counts = FantaCISFPoints::filter(member: $member, bonus: $bonus)->count();
+            if($counts > 0) {
+                $memberBonuses[] = [
+                    "id" => $bonus->id,
+                    "name" => $bonus->name,
+                    "points" => $bonus->points,
+                    "times" => $counts
+                ];
+            }
+        }
+
+        return $this->render("FantaCISF/memberBonuses", ["member" => $member, "bonuses" => $memberBonuses]);
+    }
 
 }

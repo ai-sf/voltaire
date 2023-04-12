@@ -1,0 +1,44 @@
+{% assign title = "Bonus FantaCISF (Admin)" %}
+{% assign cardtitle = "Bonus e malus"%}
+{% assign cardwidth = "100" %}
+
+{% extends "Templates/base-footer" %}
+
+{% block content %}
+
+<div class="container-lg">
+
+    {% for member in members %}
+      <div class="card card member-card my-2  shadow-sm">
+        <div class="position-absolute fw-bold badge rounded-pill bg-info px-2 py-1 mx-0" style="top: 5px; left: 5px; z-index:999;">{{member.points}} pt</div>
+
+        <div class="card-header py-3 position-relative" data-bs-toggle="collapse"  href="#bonusmalus-{{member.id}}" >
+          <div class="row position-relative align-items-center ">
+            <div class="col col-auto">
+              <img src="{{"img/fantaCISF/" | append: member.photo | url}}" style="width:60px;" class="rounded-circle img-fluid" >
+            </div>
+            <div class="col">
+              <div class="fw-bold fs-3">
+                {{member.name}}
+              </div>
+              <div class="member-description">
+                {% if member.description %}
+                {{member.description}}
+                {% else %}
+                  Comitato Organizzatore
+                  {% endif %}
+              </div>
+              </div>
+        </div>
+      </div>
+
+        <div class="card-body collapse" id="bonusmalus-{{member.id}}" hx-get="{{"fantacisf/bonusesMember/" | append: member.id | url}}" hx-trigger="load from:body">
+
+        </div>
+      </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

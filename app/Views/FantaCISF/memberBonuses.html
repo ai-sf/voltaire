@@ -1,0 +1,26 @@
+<ul class="list-group list-group-flush">
+{% for bonus in bonuses %}
+<li class="list-group-item">
+  <div class="row gx-5 gy-1 position-relative">
+    <div class="col-sm d-flex flex-row align-items-center">
+      <span class="badge {% if bonus.points > 0 %}bg-success {% else %} bg-danger {% endif %}rounded-pill px-2 py-1 fw-bold">{% if bonus.points > 0%}+{% else %}-{% endif %}{{bonus.points}} </span><span class="text-info fw-bold ms-2">{% if bonus.times > 1 %}x{{bonus.times}} {% endif %}</span>
+    </div>
+    <div class="col-sm">
+      {{bonus.name}}
+    </div>
+
+
+
+  </div>
+
+
+</li>
+
+{% endfor %}
+{% assign num_bonuses = bonuses | size %}
+{% if num_bonuses == 0 %}
+<div class="text-center">
+  Ancora nessun bonus o malus!
+</div>
+{% endif %}
+</ul>
