@@ -1,6 +1,6 @@
 
 <h4 hx-preserve class="mb-4">{{poll.title}}</h4>
-<form hx-post="{{"polls/" | append: poll.id | url }}" hx-target="closest .card-body" autocomplete="off">
+<form hx-post="{{"polls/" | append: poll.id | url }}" hx-target="closest .card-body" autocomplete="off" id="form-{{poll.id}}">
   <input type="hidden" name="access_code">
 
   <div class="row mt-4">

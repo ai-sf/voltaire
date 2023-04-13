@@ -42,8 +42,9 @@ function focusNextInput(inputField, pollId, index) {
   if (index < 4) {
     document.querySelector("#otp_"+pollId+"__"+(index+1)).focus();
   } else {
-    inputField.blur();
-    document.querySelector("#submit-"+ pollId).focus();
+    htmx.trigger("#form-" + pollId, "submit");
+    //inputField.blur();
+    //document.querySelector("#submit-"+ pollId).focus();
   }
 }
 
