@@ -258,8 +258,8 @@ class AdminController extends BaseController
     }
 
 
-    #[LoginRequired(3)]
-    private function getPollInfo($poll)
+    #[LoginRequired(1)]
+    public function getPollInfo($poll)
     {
         $votes = Vote::filter(poll: $poll)->count();
         $answers = PollAnswer::filter(poll: $poll);

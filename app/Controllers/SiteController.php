@@ -114,8 +114,12 @@ class SiteController extends BaseController
         $votes = Vote::filter(poll: $poll, user: $user)->count();
 
         if((! $poll->active)) {
-            if($user->votes >= $votes) {
-                return $this->render("Site/completedPoll", ["votes" => 0, "poll" => $poll, "message" => "Ti mostro i risultati"]);
+            if($votes <= $user->votes) {
+                $ac = new AdminController();
+                $infos = $ac->getPollInfo($poll);
+                return $this->render("Site/pollGraph", [
+                    "poll" => $poll, "infos" => $infos,
+                ]);
             } else {
                 return $this->render("Site/error", ["message" => "Votazione chiusa"]);
 
@@ -123,11 +127,7 @@ class SiteController extends BaseController
         }
 
         if ($votes >= $user->votes) {
-            if(! $poll->active) {
-                return $this->render("Site/completedPoll", ["votes" => 0, "poll" => $poll, "message" => "Ti mostro i risultati"]);
-            } else {
-                return $this->render("Site/completedPoll", ["votes" => 0, "poll" => $poll, "message" => "Hai già votato!"]);
-            }
+            return $this->render("Site/completedPoll", ["votes" => 0, "poll" => $poll, "message" => "Hai già votato!"]);
         }
 
 
