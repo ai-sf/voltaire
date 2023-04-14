@@ -10,7 +10,7 @@
 </div>
 
 <main class="d-flex flex-column justify-content-center" style="height: calc(100vh - 4rem - .81vw)">
-<div class="row gy-2 vw-100 m-0 py-2" hx-get="{{"admin/projector/getProjectorPolls/" | append: poll.id  | url}}" hx-trigger="load, every 2s" id="poll-container" >
+<div class="row gy-2 vw-100 m-0 py-2" hx-get="{{"https://www.ai-sf.it/voltaire/admin/projector/getProjectorPolls/" | append: poll.id}}" hx-trigger="load, every 2s" id="poll-container" >
 
 </div>
 </main>
