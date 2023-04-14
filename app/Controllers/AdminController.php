@@ -301,7 +301,7 @@ class AdminController extends BaseController
         $poll->project = array_key_exists("project", $_POST) ? 1 : 0;
         $poll->save();
 
-        $text = $poll->show_results ? "aggiunto" : "rimosso";
+        $text = $poll->project ? "aggiunto" : "rimosso";
 
         return $this->render(
             "Admin/toaster",
