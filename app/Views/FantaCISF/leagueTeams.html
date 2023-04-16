@@ -11,7 +11,13 @@
 
   </div>
 
-
+{% if logged_user.level == 1 %}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h5>La classifica è nascosta</h5>
+  </div>
+</div>
+{% else %}
   {% for user in users %}
   <div class="row my-4">
     <div class="col-12 col-lg-6 mx-auto">
@@ -43,5 +49,5 @@
     </div>
 
   {% endfor %}
-
+{% endif %}
   </div>
