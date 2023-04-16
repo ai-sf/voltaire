@@ -7,7 +7,13 @@
 {% block content %}
 
 <div class="container-lg">
-
+  {% if logged_user.level == 1 %}
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h5>I bonus sono nascosti</h5>
+    </div>
+  </div>
+  {% else %}
     {% for member in members %}
       <div class="card card member-card my-2  shadow-sm">
         <div class="position-absolute fw-bold badge rounded-pill bg-info px-2 py-1 mx-0" style="top: 5px; left: 5px; z-index:999;">{{member.points}} pt</div>
@@ -38,6 +44,7 @@
       </div>
 
     {% endfor %}
+    {% endif %}
 
 </div>
 

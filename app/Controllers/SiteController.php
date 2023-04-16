@@ -112,6 +112,10 @@ class SiteController extends BaseController
         $poll = Poll::get($id);
         $user = (new UserAuthenticator())->getLoggedUser();
         $votes = Vote::filter(poll: $poll, user: $user)->count();
+        if ($votes >= $user->votes) {
+            return $this->render("Site/completedPoll", ["votes" => 0, "poll" => $poll, "message" => "Hai già votato!"]);
+        }
+
 
         if((! $poll->active)) {
             if($votes <= $user->votes) {
@@ -126,9 +130,6 @@ class SiteController extends BaseController
             }
         }
 
-        if ($votes >= $user->votes) {
-            return $this->render("Site/completedPoll", ["votes" => 0, "poll" => $poll, "message" => "Hai già votato!"]);
-        }
 
 
         if(isset($_POST["access_code"])) {
