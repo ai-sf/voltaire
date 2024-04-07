@@ -1,6 +1,6 @@
 {
-    "name": "aisf/voltaire",
-    "description": "AISF voting system",
+    "name": "aisf/fanta_aisf",
+    "description": "FantaAISF",
     "type": "project",
     "autoload": {
         "psr-4": {
@@ -15,7 +15,8 @@
     ],
     "require": {
         "aisf/lepton": "@dev",
-        "liquid/liquid": "^1.4"
+        "liquid/liquid": "^1.4",
+        "twbs/bootstrap": "^5.3"
     },
     "config": {
         "allow-plugins": {

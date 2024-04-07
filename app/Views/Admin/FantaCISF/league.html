@@ -21,6 +21,26 @@
   </div>
 </div>
 
+
+<div class="row mb-5">
+    <div class="col col-auto mx-auto">
+        <div class="card shadow">
+            <div class="card-body px-5">
+                <form hx-post="{{"admin/fantacisf/showPoints" | url}}" hx-trigger="change from:find input"
+                    hx-target="#toast-body">
+                    <div class="form-check form-switch d-flex align-items-center">
+                        <input class="form-check-input me-3" name="show_points" {% if show_points==1%} checked {% endif
+                            %} type="checkbox" role="switch" id="show_points">
+                        <label class="form-check-label fs-5 fw-bold" for="start-game">Mostra classifica</label>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
 {% endif %}
 
 {% include "FantaCISF/leagueTeams" %}

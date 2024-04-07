@@ -2,15 +2,15 @@
 
 namespace App\Controllers;
 
-use Lepton\Base\Application;
+use Lepton\Core\Application;
 use Lepton\Authenticator\UserAuthenticator;
 use Lepton\Controller\BaseController;
 use Liquid\{Liquid, Template};
 
 use App\Models\{User, Poll, PollAnswer, Vote};
-use Lepton\Authenticator\LoginRequired;
+use Lepton\Authenticator\AccessControlAttributes\LoginRequired;
 use Lepton\Exceptions\MultipleFieldAttributeException;
-use Lepton\Http\HttpResponse;
+use Lepton\Http\Response\HttpResponse;
 
 class SiteController extends BaseController
 {

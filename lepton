@@ -1,0 +1,16 @@
+#!/bin/php
+
+<?php
+
+require __DIR__."/vendor/autoload.php";
+
+use Lepton\LeptonServer;
+
+$config = require 'config/config.php';
+$server = new LeptonServer(
+    sass_directory: __DIR__."/resources/_sass/",
+    css_directory: __DIR__."/resources/css/",
+    application: __DIR__
+);
+
+$server->run();

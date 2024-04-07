@@ -49,6 +49,7 @@ return [
   "admin/fantacisf/setBonus/<int:member_id>/<int:bonus_id>" => [AdminController::class, "setBonus"],
   "admin/fantacisf/removeBonus/<int:member_id>/<int:bonus_id>" => [AdminController::class, "removeBonus"],
   "admin/fantacisf/startGame" => [AdminController::class, "startGame"],
+    "admin/fantacisf/showPoints" => [AdminController::class, "showPoints"],
 
   "fantacisf" => [FantaCISFController::class, "index"],
   "fantacisf/toggle/<int:id>" => [FantaCISFController::class, "toggle"],

@@ -2,14 +2,16 @@
 
 namespace App\Controllers;
 
-use Lepton\Base\Application;
+namespace App\Controllers;
+
 use Lepton\Authenticator\UserAuthenticator;
 use Lepton\Controller\BaseController;
 use Liquid\{Liquid, Template};
 
 use App\Models\{User, FantaCISFMember, FantaCISFBonus, FantaCISFTeam, FantaCISFPoints, FantaCISFSettings};
-use Lepton\Authenticator\LoginRequired;
-use Lepton\Http\HttpResponse;
+use Lepton\Authenticator\AccessControlAttributes\LoginRequired;
+use Lepton\Http\Response\HttpResponse;
+
 
 class FantaCISFController extends BaseController
 {
@@ -90,14 +92,22 @@ class FantaCISFController extends BaseController
             $team_number = FantaCISFTeam::filter(user: $user)->count();
             if($exists) {
                 FantaCISFTeam::get(user: $user, teamMember: $member)->delete();
-                echo "cancello";
+
                 $user->fantacisf_budget += $price;
+
+                if (($user->fantacisf_captain instanceof FantaCISFMember)  && ($user->fantacisf_captain->id == $id)) {
+                    $user->fantacisf_captain = null;
+                }
+
                 $user->save();
             } else {
                 if(($user->fantacisf_budget >= $price) && ($team_number < 5)) {
                     $teamAssociation = FantaCISFTeam::new(user: $user, teamMember: $member);
                     $teamAssociation->save();
                     $user->fantacisf_budget -= $price;
+                    if (!$user->fantacisf_captain) {
+                        $user->fantacisf_captain = $member;
+                    }
                     $user->save();
                 } else {
                     exit;
@@ -178,6 +188,7 @@ class FantaCISFController extends BaseController
                 "id" => $user->id,
                 "name" => $user->name." ".$user->surname,
                 "team_name" => $user->fantacisf_team,
+                "captain" => $user->fantacisf_captain->id,
                 "points" => $points,
                 "team" => FantaCISFTeam::filter(user: $user)->do(),
                 "position" => 0
@@ -205,8 +216,9 @@ class FantaCISFController extends BaseController
         }
 
         $setting = FantaCISFSettings::get(name:"has_started");
+        $points = FantaCISFSettings::get(name: "show_points");
         return $this->render("FantaCISF/league", ["users" => $standings,
-        "num_teams" => $users->count(), "has_started" => $setting->value]);
+        "num_teams" => $users->count(), "has_started" => $setting->value, "show_points" => $points->value]);
     }
 
 
@@ -216,7 +228,9 @@ class FantaCISFController extends BaseController
         $team = FantaCISFTeam::filter(user: $user);
         $points = 0;
         foreach($team as $member) {
-            $points += $this->computePointsMember($member->teamMember);
+            $multiplier = $member->teamMember == $user->fantacisf_captain ? 2 : 1;
+
+            $points += $multiplier * $this->computePointsMember($member->teamMember);
         }
         return $points;
 

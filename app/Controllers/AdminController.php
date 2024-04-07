@@ -2,15 +2,15 @@
 
 namespace App\Controllers;
 
-use Lepton\Base\{Application, Mailer};
+use Lepton\Core\{Application, Mailer};
 use Lepton\Controller\BaseController;
 use Lepton\Boson\Model;
 use Liquid\{Liquid, Template};
 
 use App\Models\{FantaCISFBonus,FantaCISFSettings, FantaCISFMember, FantaCISFPoints, User, Poll, PollAnswer, Vote, FantaCISFTeam};
-use Lepton\Authenticator\LoginRequired;
+use Lepton\Authenticator\AccessControlAttributes\LoginRequired;
 use Lepton\Authenticator\UserAuthenticator;
-use Lepton\Http\HttpResponse;
+use Lepton\Http\Response\HttpResponse;
 
 class AdminController extends BaseController
 {
@@ -184,7 +184,7 @@ class AdminController extends BaseController
     #[LoginRequired(3)]
     public function pollsList()
     {
-        $polls = Poll::all()->order_by("timestamp DESC");
+        $polls = Poll::all()->order_by(["timestamp" => "DESC"]);
         return $this->render("Admin/Polls/pollsList", ["polls" => $polls]);
     }
 
@@ -289,7 +289,21 @@ class AdminController extends BaseController
             $pollInfo = $this->getPollInfo($poll);
             $pollsInfos[] = ["poll" => $poll, ...$pollInfo];
         }
-        return $this->render("Admin/Polls/projector-grid", ["total" => $polls->count(), "polls" => $pollsInfos]);
+
+        $activeUsers = User::filter(active: 1);
+        $total = 0;
+        foreach($activeUsers as $user) {
+            $total += $user->votes;
+        }
+
+        $quorum = intdiv($total, 2) + 1;
+
+        return $this->render("Admin/Polls/projector-grid",
+            [
+                "maggioranza" => $quorum,
+                "tot_users" => $total,
+                "total" => $polls->count(),
+                "polls" => $pollsInfos]);
     }
 
 
@@ -466,13 +480,14 @@ class AdminController extends BaseController
         $config = Application::getEmailConfig();
         $mail = new Mailer();
 
-        $subject = 'Credenziali sistema di voto AGA 2023';
+        $subject = 'Credenziali sistema di voto AGA 2024';
         $body = $this->render("Admin/loginEmail", ["name" => $user->name, "username" => $user->email, "password" => $password]);//sprintf("Username: %s <br/>Password: %s", $user->email, $password);
 
         if ($mail->send($user->email, $subject, $body)) {
             $message = "Email inviata correttamente";
         } else {
             $message = "Errore di invio";
+            $message = $mail->error;
         }
         return $this->render(
             "Admin/toaster",
@@ -574,9 +589,12 @@ class AdminController extends BaseController
             ];
         }
 
+        $show_points = FantaCISFSettings::get(name: "show_points");
+
         usort($standings, array(FantaCISFController::class, "cmp"));
         return $this->render("Admin/FantaCISF/league", ["has_started" => $settings->value, "users" => $standings,
-        "num_teams" => $users->count()]);
+        "num_teams" => $users->count(),  "show_points" => $show_points->value
+        ]);
     }
 
     #[LoginRequired(2)]
@@ -663,6 +681,21 @@ class AdminController extends BaseController
     }
 
 
+    #[LoginRequired(3)]
+    public function showPoints()
+    {
+        $setting = FantaCISFSettings::get(name: "show_points");
+        $setting->value = array_key_exists("show_points", $_POST) ? 1 : 0;
+        $setting->save();
+
+        $text = $setting->value ? "mostrati" : "nascosti";
+
+        return $this->render(
+            "Admin/toaster",
+            ["message" => "Punti $text!"],
+            headers: ['HX-Trigger' => 'showToast']
+        );
+    }
 
 
 }

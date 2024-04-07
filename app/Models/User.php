@@ -4,7 +4,7 @@ namespace App\Models;
 
 use JetBrains\PhpStorm\Deprecated;
 use Lepton\Boson\Model;
-use Lepton\Boson\DataTypes\{CharField, DateTimeField, NumberField, PrimaryKey};
+use Lepton\Boson\DataTypes\{CharField, DateTimeField, NumberField, PrimaryKey, ForeignKey};
 
 class User extends Model
 {
@@ -22,6 +22,7 @@ class User extends Model
     #[DateTimeField] protected $last_login;
     #[NumberField] protected $fantacisf_budget;
     #[CharField] protected $fantacisf_team;
+    #[ForeignKey(FantaCISFMember::class)] protected $fantacisf_captain;
     #[NumberField] protected $online;
 
 }

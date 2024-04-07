@@ -3,5 +3,17 @@
 {% extends "Templates/base-footer" %}
 
 {% block content %}
+{% if show_points == 1%}
 {% include "FantaCISF/leagueTeams" %}
+{% else %}
+<div class="row">
+    <div class="card col-12 col-lg-6 mx-auto shadow">
+        <div class="card-body text-center fs-4">
+            La classifica è nascosta!
+        </div>
+    </div>
+
+</div>
+
+{% endif %}
 {% endblock %}

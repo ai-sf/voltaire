@@ -1,19 +1,20 @@
 <?php
 
-  global $config;
-  require __DIR__."/vendor/autoload.php";
+/**
+ * DO NOT MODIFY THIS FILE!
+ */
 
-  $config = require 'config/config.php';
 
-  use Lepton\Base\Database;
-  use Lepton\Base\Application;
+require __DIR__ . "/vendor/autoload.php";
 
-  session_start();
 
-  Application::loadErrorHandler();
-  Application::loadConfig($config);
+global $config;
 
-  $dbconfig = Application::getDbConfig();
-  Application::loadDb(new Database($dbconfig->host, $dbconfig->user, $dbconfig->password, $dbconfig->dbname));
-  Application::matchRoutes();
-  Application::unloadDb();
+$config = require 'config/config.php';
+
+use Lepton\Core\Application;
+
+Application::loadErrorHandler();
+Application::loadConfig($config);
+
+Application::run();
