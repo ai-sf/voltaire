@@ -14,7 +14,7 @@
         }
     ],
     "require": {
-        "aisf/lepton": "@dev",
+        "aisf/lepton": "^0.3",
         "liquid/liquid": "^1.4",
         "twbs/bootstrap": "^5.3"
     },
@@ -28,14 +28,5 @@
         "installer-paths":{
           "lepton": ["aisf/lepton"]
         }
-    },
-
-
-    "repositories": [{
-        "type": "path",
-        "url": "../lepton",
-        "options": {
-            "symlink": true
-        }
-    }]
+    }
 }

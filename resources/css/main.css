@@ -54,3 +54,11 @@ footer .container{
   box-sizing: border-box;
   margin-bottom: 78px;
 }
+
+.bg-yellow{
+  background-color: #fcd303 !important;
+}
+
+.text-yellow {
+  color: #fcd303 !important;
+}
