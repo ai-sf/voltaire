@@ -1,4 +1,4 @@
-<div class="card member-card my-2 shadow-sm" id="member_{{member.id}}_card" :class="checkMember[{{member.id}}] ? 'bg-primary text-white' : 'bg-white'"  {% if can_edit == 1 %}style="cursor:pointer;"  {% endif %}>
+<div class="card member-card my-2 shadow-sm" id="member_{{member.id}}_card" :class="checkMember[{{member.id}}] ? ( captain == {{member.id}} ? 'bg-yellow' : 'bg-primary text-white') : 'bg-white'" {% if can_edit == 1 %} style="cursor:pointer;" {% endif %}>
   {% if member.role == 1 %}
     {% assign picciuli = 20 %}
   {% elsif member.role == 2 %}
@@ -9,6 +9,7 @@
   <div class="card-body" x-data="{picciuli_member : {{picciuli}}}" {% if can_edit == 1 %}
   @click="
   checkMember[{{member.id}}] = !checkMember[{{member.id}}];
+  if(captain == {{member.id}}) captain = '';
   picciuli = checkMember[{{member.id}}] ? picciuli - picciuli_member : picciuli + picciuli_member;
   if(picciuli < 0) {
     showToast('Non hai picciuli a sufficienza');
@@ -19,7 +20,9 @@
     showToast('Scegli al massimo 5 componenti');
     picciuli += picciuli_member;
     checkMember[{{member.id}}] = false;
-  }" hx-get="{{"fantacisf/toggle/" | append: member.id | url}}" hx-trigger="click" hx-swap="none" {% endif %}>
+  }
+  if(checkMember[{{member.id}}] && captain == '') captain = {{member.id}}
+  " hx-get="{{"fantacisf/toggle/" | append: member.id | url}}" hx-trigger="click" hx-swap="none" {% endif %}>
     <div class="row position-relative align-items-center ">
       <div class="col col-auto" style="overflow:hidden;">
         <input type="hidden" name="{{member.id}}_check" {% if can_edit == 1 %} @change="toggleFantaCISF({{member.id}})" {% endif %}x-model="checkMember[{{member.id}}]" x-init="{% if selected contains member.id %}checkMember[{{member.id}}] = true{% else %} checkMember[{{member.id}}] = false {% endif %}
@@ -40,7 +43,11 @@
         </div>
       </div>
     </div>
-    <div class="badge rounded-pill fw-bold position-absolute top-0 end-0 m-2" :class="checkMember[{{member.id}}] ? 'bg-light' : 'bg-primary'" >
+    <div class="position-absolute top-0 end-0 m-2 d-flex">
+      <div class="badge rounded-pill fw-bold bg-danger text-white me-2" x-show="captain == {{member.id}}">CAPTAIN</div>
+    <div class="badge rounded-pill fw-bold" :class="checkMember[{{member.id}}] ? (captain ==
+    {{member.id}}
+    ? 'bg-primary text-yellow' : 'bg-yellow text-primary') : 'bg-primary text-white'">
 {{picciuli}} pc.
     </div>
 
