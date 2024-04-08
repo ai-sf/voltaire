@@ -13,7 +13,7 @@ class User extends Model
     #[PrimaryKey] protected $id;
     #[CharField] protected $name;
     #[CharField] protected $surname;
-    #[CharField] protected $token;
+    #[CharField(max_length:256)] protected $token;
     #[CharField] protected $email;
     #[NumberField] protected $votes;
     #[CharField] protected $hash;
