@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<div class="container" id="fantaCISFcontainer" x-data="{checkMember: [], captain: '{{logged_user.fanta_captain.id}}', picciuli: {{logged_user.fantacisf_budget}}}">
+<div class="container" id="fantaCISFcontainer" x-data="{checkMember: [], captain: '{{logged_user.fantacisf_captain.id}}', picciuli: {{logged_user.fantacisf_budget}}}">
 
 
 <h1 class="text-center">FantaCISF</h1>
@@ -15,7 +15,7 @@
           Ti consigliamo vivamente di leggere il Regolamento che ti è stato inviato via mail prima di compilare il seguente form.
         </p>
         <p>
-          Ogni giocatore ha a disposizione <b>65 picciuli </b>per acquistare 5 dei membri in gara, selezionabili tra membri di Esecutivo, Presidenti dei Comitati Locali e membri del Comitato Organizzatore di CISF.
+          Ogni giocatore ha a disposizione <b>65 sabaudi </b>per acquistare 5 dei membri in gara, selezionabili tra membri di Esecutivo, Presidenti dei Comitati Locali e membri del Comitato Organizzatore di CISF.
         </p>
         <p>
           È possibile iscrivere la squadra <b>entro mercoledì 12 aprile 2023 alle ore 15.00</b>.
@@ -43,7 +43,7 @@
 <div id="#my-picciuli" class="position-fixed bottom-0 start-0 end-0 bg-primary py-3 px-2 shadow-lg">
   <div class="container text-white">
    <div class="row align-items-center">
-    <div class="col text-end">I miei picciuli</div>
+    <div class="col text-end">I miei sabaudi</div>
     <div class="col col-auto ms-auto fw-bold fs-3" style="color: #fcd303"><i class="bi bi-piggy-bank-fill me-1"></i> <span x-text="picciuli"></span> pc.</div>
    </div>
   </div>

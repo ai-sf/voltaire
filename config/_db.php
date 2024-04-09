@@ -2,9 +2,9 @@
 
 
 return (object) [
-    "use_db" => true,
+  "use_db" => true,
   "host" => "localhost",
-  "user" => "mysql",
-  "password" => "mysqlpwd",
-  "dbname" => "voting",
+  "user" => "root",
+  "password" => "283103069996",
+  "dbname" => "voltaire_local",
 ];
