@@ -162,7 +162,7 @@ class SiteController extends BaseController
         $authenticator = new UserAuthenticator();
         $user = $authenticator->getLoggedUser();
 
-        $answers = PollAnswer::filter(poll_id: $_POST["poll-id"], id: $_POST["answer"]);
+        $answers = PollAnswer::filter(poll: $_POST["poll-id"], id: $_POST["answer"]);
         $answer_count = $answers->count();
         $poll = Poll::get($_POST["poll-id"]);
         $votes = Vote::filter(poll: $poll, user: $user)->count();
