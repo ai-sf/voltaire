@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "aisf/lepton",
-            "version": "v0.3.0",
+            "version": "v0.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ai-sf/lepton.git",
-                "reference": "aea47e11a42c4edc401efab4626d29b8873f6f2f"
+                "reference": "7f34fcf62a79ae5a20fd7cfbc236e10a4d80e230"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ai-sf/lepton/zipball/aea47e11a42c4edc401efab4626d29b8873f6f2f",
-                "reference": "aea47e11a42c4edc401efab4626d29b8873f6f2f",
+                "url": "https://api.github.com/repos/ai-sf/lepton/zipball/7f34fcf62a79ae5a20fd7cfbc236e10a4d80e230",
+                "reference": "7f34fcf62a79ae5a20fd7cfbc236e10a4d80e230",
                 "shasum": ""
             },
             "require": {
@@ -46,9 +46,9 @@
             "description": "AISF MVC Php Framework",
             "support": {
                 "issues": "https://github.com/ai-sf/lepton/issues",
-                "source": "https://github.com/ai-sf/lepton/tree/v0.3.0"
+                "source": "https://github.com/ai-sf/lepton/tree/v0.3.1"
             },
-            "time": "2024-03-03T14:23:13+00:00"
+            "time": "2024-04-11T20:24:43+00:00"
         },
         {
             "name": "filp/whoops",

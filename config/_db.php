@@ -4,7 +4,7 @@
 return (object) [
   "use_db" => true,
   "host" => "localhost",
-  "user" => "root",
-  "password" => "283103069996",
+  "user" => "voltaire",
+  "password" => "voltairepwd",
   "dbname" => "voltaire_local",
 ];
