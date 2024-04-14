@@ -12,7 +12,7 @@
   if(captain == {{member.id}}) captain = '';
   picciuli = checkMember[{{member.id}}] ? picciuli - picciuli_member : picciuli + picciuli_member;
   if(picciuli < 0) {
-    showToast('Non hai picciuli a sufficienza');
+    showToast('Non hai gianduiotti a sufficienza');
     picciuli += picciuli_member;
     checkMember[{{member.id}}] = false
   }
@@ -48,7 +48,7 @@
     <div class="badge rounded-pill fw-bold" :class="checkMember[{{member.id}}] ? (captain ==
     {{member.id}}
     ? 'bg-primary text-yellow' : 'bg-yellow text-primary') : 'bg-primary text-white'">
-{{picciuli}} gd.
+{{picciuli}} gd. </div>
     </div>
 
   </div>
