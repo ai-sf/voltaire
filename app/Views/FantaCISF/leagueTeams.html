@@ -33,7 +33,7 @@
           <p>{{user.name}}</p>
           <div class="mt-4 mb-2">
             {% for member in user.team %}
-            <a ><img src="{{"img/fantaCISF/" | append: member.teamMember.photo | url }}" style="width: 40px; border-radius: 20px;" data-bs-toggle="tooltip" data-bs-title="{{member.teamMember.name}}" ></a>
+            <a ><img class="{% if member.teamMember.id == user.captain %}captain{% endif %} team-thumb" src="{{"img/fantaCISF/" | append: member.teamMember.photo | url }}" data-bs-toggle="tooltip" data-bs-title="{{member.teamMember.name}}" ></a>
             {% endfor %}
           </div>
         </div>
