@@ -16,7 +16,8 @@
     "require": {
         "aisf/lepton": "^0.3",
         "liquid/liquid": "^1.4",
-        "twbs/bootstrap": "^5.3"
+        "twbs/bootstrap": "^5.3",
+        "vlucas/phpdotenv": "^5.5"
     },
     "config": {
         "allow-plugins": {

@@ -2,3 +2,4 @@ config/_db.php
 config/_email.php
 /vendor/
 config-deploy/*
+.env
